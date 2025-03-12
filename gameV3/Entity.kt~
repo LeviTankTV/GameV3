@@ -1,0 +1,23 @@
+package gameV3
+
+open class Entity(
+    var name: String,           // Имя сущности
+    var description: String,    // Описание сущности
+    var health: Int,           // Здоровье сущности
+    var attackPower: Int,      // Сила атаки
+    var defensePower: Int,     // Сила защиты
+    var experience: Int = 0,    // Опыт сущности (для прокачки)
+    var level: Int = 1          // Уровень сущности
+) {
+    fun receiveDamage(damage: Int) {
+        val actualDamage = damage - defensePower
+        health -= if (actualDamage > 0) actualDamage else 0
+        if (health <= 0) {
+            die()
+        }
+    }
+
+    fun die() {
+        
+    }
+}

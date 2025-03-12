@@ -1,0 +1,24 @@
+package gameV3
+
+import kotlin.random.Random
+
+class BasicRoom(name: String, description: String) : Room(name, description) {
+    private val options = listOf("Идти на север", "Идти на юг", "Идти на восток", "Идти на запад")
+
+    override fun displayOptions() {
+        println("Выберите действие:")
+        options.forEachIndexed { index, option ->
+            println("${index + 1}. $option")
+        }
+    }
+
+    fun getNextRoom(direction: Int): Room {
+        return when (direction) {
+            1 -> BasicRoom("Северная комната", "Вы идете на север и видите темный лес.")
+            2 -> BasicRoom("Южная комната", "Вы идете на юг и слышите странные звуки.")
+            3 -> BasicRoom("Восточная комната", "Вы идете на восток и находите старую тропу.")
+            4 -> BasicRoom("Западная комната", "Вы идете на запад и видите свет вдалеке.")
+            else -> this
+        }
+    }
+}

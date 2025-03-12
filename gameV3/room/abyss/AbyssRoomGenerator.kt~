@@ -1,0 +1,4 @@
+package gameV3.room.abyss
+
+class AbyssRoomGenerator {
+}

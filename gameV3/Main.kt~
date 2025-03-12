@@ -1,0 +1,40 @@
+fun main() {
+    val game = Game()
+    game.start()
+}
+
+class Game {
+    private var currentRoom: Room = Room("Начальная комната", "Это ваша стартовая комната.")
+
+    fun start() {
+        println("Добро пожаловать в игру!")
+        while (true) {
+            println("\n${currentRoom.name}")
+            println(currentRoom.description)
+            println("Что вы хотите сделать? (введите 'выход' для выхода)")
+
+            val input = readlnOrNull()
+            if (input == "выход") {
+                println("Спасибо за игру!")
+                break
+            } else {
+                handleInput(input)
+            }
+        }
+    }
+
+    private fun handleInput(input: String?) {
+        when (input) {
+            "переход" -> changeRoom()
+            else -> println("Непонятная команда. Попробуйте снова.")
+        }
+    }
+
+    private fun changeRoom() {
+        // Здесь вы можете реализовать логику для перехода в другую комнату
+        currentRoom = Room("Новая комната", "Вы перешли в новую комнату.")
+        println("Вы переместились в новую комнату!")
+    }
+}
+
+data class Room(val name: String, val description: String)

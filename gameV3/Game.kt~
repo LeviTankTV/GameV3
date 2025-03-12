@@ -1,0 +1,71 @@
+package gameV3
+
+fun main () {
+    val menu = Menu();
+    menu.show();
+}
+
+class Game {
+    private var currentRoom: Room = BasicRoom("Лес Темноты", "Вы оказались в Лесу Темноты. Территория изменилась до неузнаваемости.")
+    private var previousRoom: Room? = null
+
+    fun start() {
+        println("Добро пожаловать в игру!")
+        gameLoop();
+    }
+
+    fun gameLoop() {
+        while (true) {
+            displayCurrentRoom()
+            val input = readlnOrNull()
+            if (input == "выход") {
+                exitGame()
+                break
+            } else {
+                handleInput(input)
+            }
+        }
+    }
+//    fun start() {
+//        println("Добро пожаловать в игру!")
+//        while (true) {
+//            println("\n${currentRoom.name}")
+//            println(currentRoom.description)
+//            currentRoom.displayOptions()
+//
+//            val input = readlnOrNull()
+//            if (input == "выход") {
+//                println("Спасибо за игру!")
+//                break
+//            } else {
+//                handleInput(input)
+//            }
+//        }
+//    }
+
+    private fun handleInput(input: String?) {
+        when {
+            input == "назад" -> goBack()
+            input?.toIntOrNull() in 1..4 -> if (input != null) {
+                changeRoom(input.toInt())
+            }
+            else -> println("Непонятная команда. Попробуйте снова.")
+        }
+    }
+
+    private fun changeRoom(direction: Int) {
+        previousRoom = currentRoom // Запоминаем предыдущую комнату
+        currentRoom = (currentRoom as BasicRoom).getNextRoom(direction)
+        println("Вы переместились в ${currentRoom.name}!")
+    }
+
+    private fun goBack() {
+        if (previousRoom != null) {
+            currentRoom = previousRoom!!
+            previousRoom = null // Сбрасываем предыдущую комнату
+            println("Вы вернулись в ${currentRoom.name}!")
+        } else {
+            println("Вы не можете вернуться, так как это первая комната.")
+        }
+    }
+}
