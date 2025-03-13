@@ -14,4 +14,6 @@ abstract class Room(val name: String, val description: String) {
     fun handleCombat() {
         // TODO do combat
     }
+
+
 }

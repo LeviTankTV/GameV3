@@ -57,6 +57,8 @@ class Game(private var player: Player) {
     }
 
     private fun gameLoop() {
+        generateDungeon()
+        currentRoom = visitedRooms[0]
         while(player.isAlive()) {
             currentRoom?.playerTurn(this, currentRoom!!)
             val input = readlnOrNull()
@@ -98,4 +100,28 @@ class Game(private var player: Player) {
             println("Вы не можете вернуться, так как это первая комната.")
         }
     }
+
+    fun moveForward() {
+        val nextRoom = currentRoom?.nextRoom
+//        nextRoom?.setEscaped(false) // Сбрасываем флаг escaped для новой комнаты
+        if (nextRoom != null) {
+            // Превращаем предыдущую комнату в NothingRoom
+            previousRoom = currentRoom
+            currentRoom = nextRoom
+            println("Вы находитесь в " + currentRoom!!.javaClass.simpleName + ".")
+        } else {
+            println("Следующая комната недоступна.")
+        }
+    }
+
+    fun moveBackward() {
+        val previousRoom = currentRoom?.previousRoom
+        if (previousRoom != null) {
+            currentRoom = previousRoom
+            println("Вы находитесь в " + currentRoom!!.javaClass.simpleName + ".")
+        } else {
+            println("Вы не можете вернуться назад.")
+        }
+    }
+
 }

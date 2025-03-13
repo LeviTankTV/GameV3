@@ -11,16 +11,9 @@ abstract class Room(val name: String, val description: String) {
     fun hasEnemies(): Boolean {
         return enemies.isNotEmpty()
     }
-
-    fun setNextRoom(room: Room?) {
-        nextRoom = room
-    }
-
-    fun setPreviousRoom(room: Room?) {
-        previousRoom = room
-    }
-
     fun handleCombat() {
         // TODO do combat
     }
+
+    
 }
