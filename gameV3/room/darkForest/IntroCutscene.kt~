@@ -1,0 +1,27 @@
+package gameV3.room.darkForest
+
+import gameV3.main.Game
+import gameV3.room.Room
+
+class IntroCutscene(name: String, description: String) : Room(name, description) {
+    override fun playerTurn(game: Game, room: Room) {
+        println("Вы выходите из разрушенного замка, обладая мощными артефактами и значительным количеством монет.")
+        waitForEnter()
+        println("Внезапно перед вами появляется звезда, сверкающая ярким светом.")
+        waitForEnter()
+        // Диалог со звездой
+        println("Звезда: \"Я - Астрал. Одному в этих краях ходить опасно. Без меня ты не сможешь покинуть королевство.\"")
+        waitForEnter()
+        println("Астрал: \"Вокруг королевства короля Артура есть барьер, который защищает его от кошмарных сил, но я могу помочь тебе.\"")
+        waitForEnter()
+        println("Астрал: \"В обмен на защиту, я обеспечу тебя барьером. Я слышал что-то странное в лесу неподалеку от королевства. Нам стоит это проверить.\"")
+
+        // Устанавливаем новый gameStage
+        game.gameStage = 1
+
+        // Генерируем новые комнаты и переходим в следующую
+        game.generateDungeon()
+        game.moveForward()
+    }
+
+}

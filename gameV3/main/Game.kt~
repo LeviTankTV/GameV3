@@ -48,6 +48,10 @@ class Game(var player: Player) {
         previousRoom.nextRoom = null
     }
 
+    fun getPlayer(): Player {
+        return player
+    }
+
     fun start() {
         val playername = player.name
         println("Время пришло. $playername выходит из замка и идет в темный лес.")

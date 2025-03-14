@@ -9,7 +9,7 @@ class CreatureFactory {
 
     // Метод для получения случайного существа из темного леса
     fun getRandomDarkForestCreature(game : Game): Creature {
-        val playerLevel = game.getPlayer().level
+        val playerLevel = game.player.level
         val creatures = listOf(
             ForestMice(level = playerLevel),
             ForestBeetle(level = playerLevel),

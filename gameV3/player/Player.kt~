@@ -16,8 +16,6 @@ class Player(
 //    var allies: List<Ally>
 ) : Entity(name, description, health, attackPower, defensePower, level)
 {
-    var inventory = listOf<Item>()
-    var allies = listOf<Ally>()
 
     fun addXP(xp: Int) {
         experience += xp

@@ -9,10 +9,19 @@ class DarkForestRoom(name: String, description: String) : Room(name, description
     private val creatureFactory = CreatureFactory();
     private val options = listOf("Идти на север", "Идти на юг", "Идти на восток", "Идти на запад")
 
-    override fun displayOptions() {
+    override fun playerTurn(game: Game, room: Room) {
         println("Выберите действие:")
         options.forEachIndexed { index, option ->
             println("${index + 1}. $option")
+        }
+
+        // Генерация случайного числа от 1 до 10
+        val eventTrigger = Random.nextInt(1, 11)
+
+        if (eventTrigger <= 3) { // 30% шанс на событие
+            triggerEvent("Вы наткнулись на таинственное существо!", game)
+        } else {
+            handleEmptyRoom(game) // Обработка пустой комнаты
         }
     }
 
@@ -31,7 +40,7 @@ class DarkForestRoom(name: String, description: String) : Room(name, description
             }
             2 -> {
                 if (eventTrigger <= 3) {
-                    triggerEvent("Вы нашли заброшенный лагерь!", game)
+                    triggerEvent("Вы видете что-то вдалеке!", game)
                     this
                 } else {
                     DarkForestRoom("Южная комната", "Вы идете на юг и слышите странные звуки.")
@@ -39,7 +48,7 @@ class DarkForestRoom(name: String, description: String) : Room(name, description
             }
             3 -> {
                 if (eventTrigger <= 3) {
-                    triggerEvent("Вы обнаружили скрытый проход!", game)
+                    triggerEvent("Вы увидели монстров вдалеке, но победили их одним ударом!", game)
                     this
                 } else {
                     DarkForestRoom("Восточная комната", "Вы идете на восток и находите старую тропу.")
@@ -47,7 +56,7 @@ class DarkForestRoom(name: String, description: String) : Room(name, description
             }
             4 -> {
                 if (eventTrigger <= 3) {
-                    triggerEvent("Вы увидели светящийся объект вдалеке!", game)
+                    triggerEvent("Вы увидели плакат вдалеке!", game)
                     this
                 } else {
                     DarkForestRoom("Западная комната", "Вы идете на запад и видите свет вдалеке.")
