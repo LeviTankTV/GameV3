@@ -9,6 +9,8 @@ class DarkForestRoom(name: String, description: String) : Room(name, description
     private val creatureFactory = CreatureFactory();
 
     override fun playerTurn(game: Game, room: Room) {
+
+
         // Генерация случайного числа от 1 до 10
         val eventTrigger = Random.nextInt(1, 11)
 
