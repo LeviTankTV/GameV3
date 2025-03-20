@@ -1,8 +1,9 @@
 package gameV3.player
 
-import gameV3.item.Item
 import gameV3.entities.Entity
 import gameV3.entities.allies.Ally
+import gameV3.main.Game
+import gameV3.room.Room
 
 class Player(
     name: String,
@@ -12,10 +13,14 @@ class Player(
     defensePower: Int = 5,
     level: Int = 100,
     var experience: Int = 0,
+    var gold: Int = 0
 //    var inventory: Inventory,
 //    var allies: List<Ally>
 ) : Entity(name, description, health, attackPower, defensePower, level)
 {
+    var inventory = Inventory()
+    var allies = listOf<Ally>()
+    var astral = Astral()
 
     fun addXP(xp: Int) {
         experience += xp
@@ -36,25 +41,27 @@ class Player(
         experience -= level * 100
         increaseStats()
     }
-    // Метод для атаки
-    fun attack(target: Entity) {
-        println("$name атакует ${target.name}!")
-        target.receiveDamage(attackPower)
+
+    override fun performAction(game: Game, room: Room) {
+        val enemies = room.enemies
+        val allies = this.allies
+        when (game.gameStage) {
+            1 -> {
+                
+            }
+            2 -> {
+
+            }
+            3 -> {
+
+            }
+            4 -> {
+
+            }
+            5 -> {
+
+            }
+        }
     }
 
-    // Метод для использования предмета из инвентаря
-    fun useItem(item: Item) {
-        // Логика использования предмета
-        println("$name использует ${item.name}.")
-    }
-
-    fun aboutPlayer() {
-        println("Имя: $name")
-        println("Описание: $description")
-        println("Здоровье: $health")
-        println("Сила атаки: $attackPower")
-        println("Сила защиты: $defensePower")
-        println("Опыт: $experience")
-        println("Уровень: $level")
-    }
 }

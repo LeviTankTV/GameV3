@@ -16,7 +16,6 @@ class Ally(name: String, description: String, health: Int, attackPower: Int, def
     fun describe() {
         println("Существо: $name")
         println("Описание: $description")
-        println("Вид: $species")
         println("Здоровье: $health")
         println("Сила атаки: $attackPower")
         println("Сила защиты: $defensePower")

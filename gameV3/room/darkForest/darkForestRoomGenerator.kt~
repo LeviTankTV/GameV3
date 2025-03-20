@@ -1,4 +1,10 @@
 package gameV3.room.darkForest
 
-class darkForestRoomGenerator {
+import gameV3.room.Room
+import gameV3.room.RoomGenerator
+
+class DarkForestRoomGenerator : RoomGenerator {
+    override fun generateRoom(): Room {
+        return DarkForestMaze("Лес Темноты", "Вы оказались в Лесу Темноты. Территория изменилась до неузнаваемости.")
+    }
 }

@@ -1,0 +1,4 @@
+package gameV3.item.eatable
+
+class PorciniMushroom {
+}

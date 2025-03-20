@@ -2,17 +2,25 @@ package gameV3.main
 
 import gameV3.player.Player
 import gameV3.room.Room
+import gameV3.room.darkForest.DarkForestMaze
 import gameV3.room.darkForest.DarkForestRoom
 import gameV3.room.darkForest.DarkForestRoomGenerator
 import gameV3.room.darkForest.IntroCutscene
 import java.util.*
+import kotlin.system.exitProcess
 
 class Game(var player: Player) {
 //    private var currentRoom: Room = DarkForestRoom("Лес Темноты", "Вы оказались в Лесу Темноты. Территория изменилась до неузнаваемости.")
-    private var currentRoom: Room? = null
-    private var previousRoom: Room? = null
+    var currentRoom: Room? = null
+    var previousRoom: Room? = null
     var gameStage = 0;
     private var visitedRooms: LinkedList<Room> = LinkedList()
+
+    var usedAstralAdvice = false
+    var darkForestRoomStepsCounter = 0
+    var napCounter = 0
+    // Dark Forest Maze
+    var mazeSolved = false
 
     fun generateDungeon() {
 
@@ -60,8 +68,9 @@ class Game(var player: Player) {
         while(player.isAlive()) {
             currentRoom?.playerTurn(this, currentRoom!!)
         }
-        if (!player.isAlive()) {
+        if (!player.isAlive() || napCounter == 10 ) {
             println("Вы проиграли. Попробуйте еще раз.")
+            exitProcess(0)
         }
     }
 

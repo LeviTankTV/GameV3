@@ -1,0 +1,10 @@
+package gameV3.item.eatable
+
+import gameV3.item.Item
+import gameV3.main.Game
+
+class Raspberries(name: String = "Малина", description: String = "Вкусная малина") : Item(name, description) {
+    fun eat(game: Game) {
+        println("Вы съели малину.")
+    }
+}

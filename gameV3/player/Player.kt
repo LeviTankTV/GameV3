@@ -1,8 +1,10 @@
 package gameV3.player
 
-import gameV3.item.Item
 import gameV3.entities.Entity
 import gameV3.entities.allies.Ally
+import gameV3.main.Game
+import gameV3.room.Room
+import kotlin.random.Random
 
 class Player(
     name: String,
@@ -12,12 +14,13 @@ class Player(
     defensePower: Int = 5,
     level: Int = 100,
     var experience: Int = 0,
+    var gold: Int = 0
 //    var inventory: Inventory,
 //    var allies: List<Ally>
-) : Entity(name, description, health, attackPower, defensePower, level)
-{
-    var inventory = listOf<Item>()
+) : Entity(name, description, health, attackPower, defensePower, level) {
+    var inventory = Inventory()
     var allies = listOf<Ally>()
+    var astral = Astral()
 
     fun addXP(xp: Int) {
         experience += xp
@@ -38,25 +41,52 @@ class Player(
         experience -= level * 100
         increaseStats()
     }
-    // Метод для атаки
-    fun attack(target: Entity) {
-        println("$name атакует ${target.name}!")
-        target.receiveDamage(attackPower)
-    }
 
-    // Метод для использования предмета из инвентаря
-    fun useItem(item: Item) {
-        // Логика использования предмета
-        println("$name использует ${item.name}.")
-    }
+    override fun performAction(game: Game, room: Room) {
+        val enemies = room.enemies
+        val allies = this.allies
+        when (game.gameStage) {
+            1 -> {
+                val phrases = mutableListOf(
+                    "Сердце леса не ждёт.",
+                    "Ваша судьба в ваших руках.",
+                    "Время наступило.",
+                    "Вы наполнены решимостью.",
+                    "Атакуйте!",
+                    "Вам не сбежать от судьбы."
+                )
+                val random = Random.nextInt(phrases.size)
+                println(phrases[random] + " Выберете действие:")
+                println("1. Атаковать")
+                println("2. Попытаться сломать главный корень")
+                println("3. Попытаться сломать побочный корень 1")
+                println("4. Попытаться сломать побочный корень 2")
+                println("5. Попытаться сломать побочный корень 3")
+                println("6. Попытаться сломать побочный корень 4")
+                println("7. Попытаться сломать побочный корень 5")
+                var choice = readlnOrNull()?.toInt()
+                when (choice) {
+                    1 -> {
+                        println("Вы атакуете ${enemies[0].name}, но понимаете, что грубая сила здесь не подходит.")
+                    }
+                }
+            }
 
-    fun aboutPlayer() {
-        println("Имя: $name")
-        println("Описание: $description")
-        println("Здоровье: $health")
-        println("Сила атаки: $attackPower")
-        println("Сила защиты: $defensePower")
-        println("Опыт: $experience")
-        println("Уровень: $level")
+            2 -> {
+
+            }
+
+            3 -> {
+
+            }
+
+            4 -> {
+
+            }
+
+            5 -> {
+
+            }
+        }
     }
 }

@@ -56,7 +56,4 @@ open class Entity(
         effects += effect
     }
 
-    fun removeEffect(effect: Effect) {
-        effects -= effect
-    }
 }

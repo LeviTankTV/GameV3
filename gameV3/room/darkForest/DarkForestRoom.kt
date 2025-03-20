@@ -1,73 +1,38 @@
 package gameV3.room.darkForest
 
-import gameV3.entities.CreatureFactory
 import gameV3.main.Game
 import gameV3.room.Room
-import kotlin.random.Random
+import kotlin.system.exitProcess
 
 class DarkForestRoom(name: String, description: String) : Room(name, description) {
-    private val creatureFactory = CreatureFactory();
 
     override fun playerTurn(game: Game, room: Room) {
-
-
-        // Генерация случайного числа от 1 до 10
-        val eventTrigger = Random.nextInt(1, 11)
-
-        if (eventTrigger <= 3) { // 30% шанс на событие
-            triggerEvent("Вы наткнулись на таинственное существо!", game)
+        game.usedAstralAdvice = false
+        if (game.darkForestRoomStepsCounter != 7) {
+            room.handleEmptyRoom(game)
         } else {
-            handleEmptyRoom(game) // Обработка пустой комнаты
+            println("В темноте вы видите лесной лабиринт. Выберите действие:")
+            println("1. Идти в лабиринт")
+            println("2. Посидеть и отдохнуть")
+
+            val input = readlnOrNull()
+            when (input) {
+                "1" -> {
+                    game.currentRoom = DarkForestMaze("Лесной Лабиринт", "Вы находитесь в лесном лабиринте. Вам нужно найти выход.")
+                    game.previousRoom = null
+                }
+                "2" -> {
+                    game.napCounter++
+                    if (game.napCounter == 10) {
+                        game.player.health = 0
+                        println("Вы уснули и вас съели монстры.")
+                        exitProcess(0)
+                    }
+                    playerTurn(game, room)
+                }
+                else -> println("Непонятная команда. Попробуйте снова.")
+            }
         }
-    }
-
-    fun getNextRoom(direction: Int, game: Game): Room {
-        // Генерация случайного числа от 1 до 10
-        val eventTrigger = Random.nextInt(1, 11)
-
-        return when (direction) {
-            1 -> {
-                if (eventTrigger <= 3) { // 30% шанс на событие
-                    triggerEvent("Вы наткнулись на таинственное существо!", game)
-                    this // Возвращаем ту же комнату
-                } else {
-                    DarkForestRoom("Северная комната", "Вы идете на север и видите темный лес.")
-                }
-            }
-            2 -> {
-                if (eventTrigger <= 3) {
-                    triggerEvent("Вы видете что-то вдалеке!", game)
-                    this
-                } else {
-                    DarkForestRoom("Южная комната", "Вы идете на юг и слышите странные звуки.")
-                }
-            }
-            3 -> {
-                if (eventTrigger <= 3) {
-                    triggerEvent("Вы увидели монстров вдалеке, но победили их одним ударом!", game)
-                    this
-                } else {
-                    DarkForestRoom("Восточная комната", "Вы идете на восток и находите старую тропу.")
-                }
-            }
-            4 -> {
-                if (eventTrigger <= 3) {
-                    triggerEvent("Вы увидели плакат вдалеке!", game)
-                    this
-                } else {
-                    DarkForestRoom("Западная комната", "Вы идете на запад и видите свет вдалеке.")
-                }
-            }
-            else -> this
-        }
-    }
-
-    private fun triggerEvent(eventMessage: String, game: Game) {
-        println(eventMessage)
-        if (eventMessage == "Вы наткнулись на таинственное существо!") {
-            // val randomCreature = creatureFactory.getRandomDarkForestCreature(game);
-
-        }
-        // Здесь вы можете добавить логику для обработки события, например, сражение или получение предмета
     }
 }
+

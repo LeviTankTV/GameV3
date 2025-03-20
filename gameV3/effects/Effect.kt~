@@ -1,0 +1,11 @@
+package gameV3.effects
+
+import gameV3.entities.Entity
+
+class Effect(name: String) {
+    var duration = 0
+
+    fun apply(entity: Entity){}
+    fun remove(entity: Entity){}
+    fun update(entity: Entity){}
+}
