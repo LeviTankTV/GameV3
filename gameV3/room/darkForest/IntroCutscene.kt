@@ -29,6 +29,7 @@ class IntroCutscene(name: String, description: String) : Room(name, description)
         // Генерируем новые комнаты и переходим в следующую
         game.generateDungeon()
         game.moveForward()
+
     }
 
 }

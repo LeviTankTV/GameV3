@@ -1,6 +1,5 @@
 package gameV3.room.darkForest
 
-import gameV3.entities.CreatureFactory
 import gameV3.item.Factories
 import gameV3.main.Game
 import gameV3.room.Room

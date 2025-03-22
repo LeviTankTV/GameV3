@@ -4,7 +4,7 @@ import gameV3.entities.Entity
 import gameV3.main.Game
 
 abstract class Room(val name: String, val description: String) {
-    var enemies: List<Entity> = listOf();
+    var enemies: MutableList<Entity> = mutableListOf();
     var previousRoom: Room? = null
     var nextRoom: Room? = null
 
@@ -14,8 +14,63 @@ abstract class Room(val name: String, val description: String) {
         return enemies.isNotEmpty()
     }
 
-    fun handleCombat(game: Game, room: Room) {
+    fun clearEnemies() {
+        enemies.clear()
+    }
 
+    fun handleCombat(game: Game, room: Room) {
+        when (game.gameStage) {
+            1 -> {
+                while (game.player.isAlive() && game.player.astral.isAlive()) {
+                    game.player.updateEffects(game)
+                    game.player.astral.updateEffects(game)
+
+                    // Обновляем эффекты союзников
+                    if (game.player.allies.isNotEmpty()) {
+                        for (ally in game.player.allies) {
+                            ally.updateEffects(game)
+                        }
+                    }
+
+                    // Игрок выполняет свои действия
+                    game.player.astral.performAction(game, room)
+                    game.player.performAction(game, room)
+
+                    // Действия союзников
+                    if (game.player.allies.isNotEmpty()) {
+                        for (ally in game.player.allies) {
+                            ally.performAction(game, room)
+                        }
+                    }
+
+                    println("Ход игрока окончен.")
+                    waitForEnter()
+                    println("Ход противников:")
+
+                    // Обновляем эффекты врагов
+                    for (enemy in room.enemies) {
+                        if (enemy.isAlive()) {
+                            enemy.updateEffects(game)
+                        }
+                    }
+
+                    // Действия врагов
+                    for (enemy in room.enemies) {
+                        if (enemy.isAlive()) {
+                            enemy.performAction(game, room)
+
+                            // Проверяем, жив ли враг после действия
+                            if (!enemy.isAlive()) {
+                                enemy.die(game) // Вызываем метод die() если враг мёртв
+                                println("${enemy.name} был повержен!")
+                            }
+                        }
+                    }
+
+                    waitForEnter()
+                }
+            }
+        }
     }
 
     fun openChestDarkForest() {

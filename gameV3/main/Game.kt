@@ -2,6 +2,7 @@ package gameV3.main
 
 import gameV3.player.Player
 import gameV3.room.Room
+import gameV3.room.crimsonChimes.CrimsonChimesEntranceRoom
 import gameV3.room.darkForest.DarkForestMaze
 import gameV3.room.darkForest.DarkForestRoom
 import gameV3.room.darkForest.DarkForestRoomGenerator
@@ -30,7 +31,7 @@ class Game(var player: Player) {
 //            gameStage == 5 -> TrueCastleEntranceRoom() // Пример для пятой стадии
 //            gameStage == 4 -> FourthGamePartRoom() // Пример для четвертой стадии
 //            gameStage == 3 -> ThirdGamePartRoom() // Пример для третьей стадии
-//            gameStage == 2 -> SecondGamePartRoom() // Пример для второй стадии
+            gameStage == 2 -> CrimsonChimesEntranceRoom() // Пример для второй стадии
             gameStage == 1 -> DarkForestRoom("Лес Темноты", "Вы оказались в Лесу Темноты. Территория изменилась до неузнаваемости.") // Первая стадия
             else -> IntroCutscene("Кат сцена начала игры", "...")
         }

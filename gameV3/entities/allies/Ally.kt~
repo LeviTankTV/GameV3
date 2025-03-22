@@ -1,25 +1,13 @@
 package gameV3.entities.allies
 
 import gameV3.entities.Entity
+import gameV3.main.Game
+import gameV3.room.Room
 
-class Ally(name: String, description: String, health: Int, attackPower: Int, defensePower: Int, level: Int) : Entity(name, description, health, attackPower, defensePower, level) {
-    var allies = listOf<Ally>()
+class Ally(name: String, description: String, health: Long, attackPower: Long, defensePower: Long, level: Int) : Entity(name, description, health, attackPower, defensePower, level) {
 
-    fun addAlly(ally: Ally) {
-        allies = allies + ally
+    override fun performAction(game: Game, room: Room) {
+        super.performAction(game, room)
     }
-
-    fun removeAlly(ally: Ally) {
-        allies = allies - ally
-    }
-
-    fun describe() {
-        println("Существо: $name")
-        println("Описание: $description")
-        println("Вид: $species")
-        println("Здоровье: $health")
-        println("Сила атаки: $attackPower")
-        println("Сила защиты: $defensePower")
-        println("Уровень: $level")
-    }
+    
 }

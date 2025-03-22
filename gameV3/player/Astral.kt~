@@ -11,7 +11,17 @@ class Astral(name: String = "Астрал", description: String = "Ваш гла
         val enemies = room.enemies
         val random = Random.nextInt(enemies.size)
         val enemy = enemies[random]
-        
+        val player = game.player
+        val action = Random.nextInt(2)
+        when (action) {
+            0 -> this.attack(null , enemy)
+            1 -> this.heal(game)
+        }
+
+    }
+
+    private fun heal(game: Game) {
+        game.player.health += Random.nextInt(50) + game.player.level * 5
     }
 
 }

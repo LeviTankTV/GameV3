@@ -4,7 +4,7 @@ import gameV3.entities.Entity
 import gameV3.main.Game
 
 abstract class Room(val name: String, val description: String) {
-    var enemies: List<Entity> = listOf();
+    var enemies: MutableList<Entity> = mutableListOf();
     var previousRoom: Room? = null
     var nextRoom: Room? = null
 
@@ -14,8 +14,51 @@ abstract class Room(val name: String, val description: String) {
         return enemies.isNotEmpty()
     }
 
+    fun clearEnemies() {
+        enemies.clear()
+    }
+
     fun handleCombat(game: Game, room: Room) {
-        
+        when(game.gameStage) {
+            1 -> {
+                while(game.player.isAlive() && game.player.astral.isAlive()) {
+                    game.player.updateEffects(game)
+                    game.player.astral.updateEffects(game)
+                    if (game.player.allies.isNotEmpty()) {
+                        for (ally in game.player.allies) {
+                            ally.updateEffects(game)
+                        }
+                    }
+                    game.player.astral.performAction(game, room)
+                    game.player.performAction(game, room)
+                    if (game.player.allies.isNotEmpty()) {
+                        for (ally in game.player.allies) {
+                            ally.performAction(game, room)
+                        }
+                    }
+                    println("Ход игрока окончен.")
+                    waitForEnter()
+                    println("Ход противников:")
+
+
+                    for(enemy in room.enemies) {
+                        if (enemy.isAlive()) {
+                            enemy.updateEffects(game)
+                        }
+                    }
+
+                    for (enemy in room.enemies) {
+                        if (enemy.isAlive()) {
+                            enemy.performAction(game, room)
+                        }
+                    }
+                    waitForEnter()
+
+                }
+            }
+
+
+        }
     }
 
     fun openChestDarkForest() {
