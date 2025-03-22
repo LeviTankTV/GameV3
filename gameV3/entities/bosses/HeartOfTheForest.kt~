@@ -11,7 +11,9 @@ import kotlin.random.Random
 class HeartOfTheForest(name : String = "Сердце леса", description : String = "Хранитель многих тайн", health : Long = 55555, attackPower : Long = 80, defensePower : Long = 100000, level : Int = 1): Entity(name, description, health, attackPower, defensePower, level) {
 
     override fun performAction(game: Game, room: Room) {
-        val targets = getTargets(game)
+        val astral = game.player.astral
+        val playerAllies = game.player.allies
+        val targets = listOf(astral,game.player) + playerAllies
 
         val action = Random.nextInt(5)
 

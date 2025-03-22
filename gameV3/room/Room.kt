@@ -73,10 +73,10 @@ abstract class Room(val name: String, val description: String) {
         }
     }
 
-    fun openChestDarkForest() {
-        // TODO
+    fun openChest(game: Game) {
+        val chest = Chest()
+        chest.open(game)
     }
-
     fun openInventory(game: Game) {
         val inventory = game.player.inventory
         println("Ваш инвентарь:")

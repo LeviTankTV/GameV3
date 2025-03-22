@@ -13,9 +13,7 @@ class CrimsonChimesEntranceRoom(name: String = "Вход в малиновую �
             println("Спасибо за игру!")
             exitProcess(0)
         } else if (input == "да") {
-            game.generateDungeon()
             game.moveForward()
         }
-
     }
 }

@@ -19,52 +19,68 @@ abstract class Room(val name: String, val description: String) {
     }
 
     fun handleCombat(game: Game, room: Room) {
-        when(game.gameStage) {
+        when (game.gameStage) {
             1 -> {
-                while(game.player.isAlive() && game.player.astral.isAlive()) {
+                while (game.player.isAlive() && game.player.astral.isAlive()) {
                     game.player.updateEffects(game)
                     game.player.astral.updateEffects(game)
+
+                    // Обновляем эффекты союзников
                     if (game.player.allies.isNotEmpty()) {
                         for (ally in game.player.allies) {
                             ally.updateEffects(game)
                         }
                     }
+
+                    // Игрок выполняет свои действия
                     game.player.astral.performAction(game, room)
                     game.player.performAction(game, room)
+
+                    // Действия союзников
                     if (game.player.allies.isNotEmpty()) {
                         for (ally in game.player.allies) {
                             ally.performAction(game, room)
                         }
                     }
+
                     println("Ход игрока окончен.")
                     waitForEnter()
                     println("Ход противников:")
 
-
-                    for(enemy in room.enemies) {
+                    // Обновляем эффекты врагов
+                    for (enemy in room.enemies) {
                         if (enemy.isAlive()) {
                             enemy.updateEffects(game)
                         }
                     }
 
+                    // Действия врагов
                     for (enemy in room.enemies) {
                         if (enemy.isAlive()) {
                             enemy.performAction(game, room)
+
+                            // Проверяем, жив ли враг после действия
+                            if (!enemy.isAlive()) {
+                                enemy.die(game) // Вызываем метод die() если враг мёртв
+                                println("${enemy.name} был повержен!")
+                            }
                         }
                     }
-                    waitForEnter()
 
+                    waitForEnter()
                 }
             }
-
-
         }
     }
 
-    fun openChestDarkForest() {
-        // TODO
+    fun openChest(game: Game) {
+        when(game.gameStage) {
+            1 -> {
+                val chest = Chest()
+                chest.open(game)
+            }
+        }
     }
-
     fun openInventory(game: Game) {
         val inventory = game.player.inventory
         println("Ваш инвентарь:")

@@ -1,0 +1,7 @@
+package gameV3.item.consumable
+
+import gameV3.item.Consumable
+
+class InvisibilityPotion: Consumable(name = "Зелье невидимости", description = "Это зелье сделает вас невидимым для врагов.") {
+
+}

@@ -71,16 +71,6 @@ open class Entity(
         }
     }
 
-    fun getTargets (game: Game): List<Entity> {
-        val targets = mutableListOf<Entity>()
-        for (ally in game.player.allies) {
-            targets.add(ally)
-        }
-        targets.add(game.player)
-        targets.add(game.player.astral)
-        return targets
-    }
-
     open fun performAction(game: Game, room: Room) {
         TODO("Implement this method in the subclass")
     }

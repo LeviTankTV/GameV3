@@ -1,6 +1,6 @@
 package gameV3.item
 
-import gameV3.item.consumable.*
+import gameV3.item.eatable.*
 import kotlin.random.Random
 
 class Factories {

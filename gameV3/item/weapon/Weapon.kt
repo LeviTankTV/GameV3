@@ -7,9 +7,11 @@ open class Weapon(name: String, description: String) : Item(name, description) {
 
     open var critChance: Long = 0
 
-    open var critMultiplier: Long = 1
+    open var critMultiplier: Double = 1.0
 
     open var damage: Long = 0
+
+    open var type: String = "Neutral"
 
     open fun applySpecialEffect(target: Entity) {
         TODO("Implement this method in the subclass")

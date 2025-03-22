@@ -15,7 +15,7 @@ class Game(var player: Player) {
     var currentRoom: Room? = null
     var previousRoom: Room? = null
     var gameStage = 0;
-    private var visitedRooms: LinkedList<Room> = LinkedList()
+    var visitedRooms: LinkedList<Room> = LinkedList()
 
     var usedAstralAdvice = false
     var darkForestRoomStepsCounter = 0
