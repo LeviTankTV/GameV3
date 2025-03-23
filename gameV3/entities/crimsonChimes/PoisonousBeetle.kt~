@@ -1,0 +1,4 @@
+package gameV3.entities.crimsonChimes
+
+class PoisonousBeetle {
+}

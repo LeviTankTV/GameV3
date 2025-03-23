@@ -1,12 +1,16 @@
 package gameV3.room
 
 import gameV3.entities.Entity
+import gameV3.item.Factories
 import gameV3.main.Game
+import gameV3.room.crimsonChimes.CrimsonChimesChestRoom
 
 abstract class Room(val name: String, val description: String) {
     var enemies: MutableList<Entity> = mutableListOf();
     var previousRoom: Room? = null
     var nextRoom: Room? = null
+
+    val itemFactory = Factories()
 
     abstract fun playerTurn(game: Game, room: Room)
 
@@ -21,7 +25,7 @@ abstract class Room(val name: String, val description: String) {
     fun handleCombat(game: Game, room: Room) {
         when (game.gameStage) {
             1 -> {
-                while (game.player.isAlive() && game.player.astral.isAlive()) {
+                while (game.player.isAlive() && game.player.astral.isAlive() && room.hasEnemies()) {
                     game.player.updateEffects(game)
                     game.player.astral.updateEffects(game)
 
@@ -73,10 +77,16 @@ abstract class Room(val name: String, val description: String) {
         }
     }
 
-    fun openChest(game: Game) {
-        val chest = Chest()
-        chest.open(game)
+    fun openChest(game: Game, room: Room) {
+        when (room) {
+            is CrimsonChimesChestRoom -> {
+                val drop = itemFactory.crimsonChimesChestItemGenerator()
+                println("Вы открыли сундук и нашли: ${drop.name}.")
+                game.player.inventory.addItem(drop)
+            }
+        }
     }
+
     fun openInventory(game: Game) {
         val inventory = game.player.inventory
         println("Ваш инвентарь:")
@@ -103,35 +113,92 @@ abstract class Room(val name: String, val description: String) {
     }
 
     fun handleEmptyRoom(game: Game) {
-        if (game.gameStage == 1) {
-            println("Вы находитесь в тёмном лесу. Выберите действие:")
-            println("1. Идти глубже в лес")
-            println("2. Вернуться по своим следам")
-            println("3. Показать статистику игрока")
-            println("4. Просмотреть свой инвентарь")
-            println("5. Попросить совет у Астрала")
+        when (game.gameStage) {
+            1 -> {
+                println("Вы находитесь в тёмном лесу. Выберите действие:")
+                println("1. Идти глубже в лес")
+                println("2. Вернуться по своим следам")
+                println("3. Показать статистику игрока")
+                println("4. Просмотреть свой инвентарь")
+                println("5. Попросить совет у Астрала")
 
-            val input = readlnOrNull()
-            when (input) {
-                "1" ->  {
-                    game.darkForestRoomStepsCounter++
-                    game.moveForward()
+                val input = readlnOrNull()
+                when (input) {
+                    "1" -> {
+                        game.darkForestRoomStepsCounter++
+                        game.moveForward()
+                    }
+                    "2" -> {
+                        game.darkForestRoomStepsCounter--
+                        game.moveBackward()
+                    }
+                    "3" -> showPlayerStats(game)
+                    "4" -> openInventory(game)
+                    "5" -> if (!game.usedAstralAdvice) {
+                        astralAdvice(game)
+                        game.usedAstralAdvice = true
+                    } else {
+                        println("Вы уже получили совет от Астрала.")
+                    }
+                    else -> println("Непонятная команда. Попробуйте снова.")
                 }
-                "2" -> {
-                    game.darkForestRoomStepsCounter--
-                    game.moveBackward()
-                }
-                "3" -> showPlayerStats(game)
-                "4" -> openInventory(game)
-                "5" -> if (!game.usedAstralAdvice) {
-                    astralAdvice(game)
-                    game.usedAstralAdvice = true
-                }
-                else -> println("Непонятная команда. Попробуйте снова.")
             }
-        } else {
-            // Логика для других стадий игры
-            println("Эта комната пуста, но вы можете продолжать исследовать.")
+            // Добавьте дополнительные стадии игры здесь
+            2 -> {
+                println("Вы находитесь в пустой комнате. Выберите действие:")
+                println("1. Идти дальше по малиновому лесу")
+                println("2. Вернуться назад")
+                println("3. Показать статистику игрока")
+                println("4. Поделать что-то в инвентаре")
+                println("5. Просмотреть статистику Астрала")
+                println("6. Просмотреть статистику союзников")
+
+                val input = readlnOrNull()
+                when (input) {
+                    "1" -> {
+                        game.moveForward()
+                    }
+                    "2" -> {
+                        game.moveBackward()
+                    }
+                    "3" -> showPlayerStats(game)
+                    "4" -> openInventory(game)
+                    "5" -> showAstralStats(game)
+                    "6" -> showAlliesStats(game)
+                    else -> println("Непонятная команда. Попробуйте снова.")
+                }
+            }
+            3 -> {
+                // Логика для стадии 3
+                println("Эта комната пуста, но вы можете продолжать исследовать.")
+            }
+            4 -> {
+                // Логика для стадии 4
+                println("Эта комната пуста, но вы можете продолжать исследовать.")
+            }
+            5 -> {
+                // Логика для стадии 5
+                println("Эта комната пуста, но вы можете продолжать исследовать.")
+            }
+            else -> {
+                println("Эта комната пуста, но вы можете продолжать исследовать.")
+            }
+        }
+    }
+
+    fun showAstralStats(game: Game) {
+        val astral = game.player.astral
+        println("Имя: ${astral.name}")
+        println("Здоровье: ${astral.health}")
+        println("Уровень: ${astral.level}")
+    }
+
+    fun showAlliesStats(game: Game) {
+        val allies = game.player.allies
+        for (ally in allies) {
+            println("Имя: ${ally.name}")
+            println("Здоровье: ${ally.health}")
+            println("Уровень: ${ally.level}")
         }
     }
 

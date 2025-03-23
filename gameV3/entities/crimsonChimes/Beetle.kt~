@@ -1,0 +1,4 @@
+package gameV3.entities.crimsonChimes
+
+class Beetle(name : String = "Жук", description : String = "Просто жук", health : Long = 50, attackPower : Long = 10, defensePower : Long = 0, level : Int) : CrimsonChimesMob(name, description, health, attackPower, defensePower, level) {
+}

@@ -2,7 +2,7 @@ package gameV3.effects
 
 import gameV3.entities.Entity
 
-class BleedingEffect(duration: Int, val damagePerTurn: Long): Effect(duration) {
+class PoisonEffect(duration: Int, private val damagePerTurn: Long) : Effect(duration) {
     override fun update(entity: Entity) {
         duration--
         entity.receiveDamage(null, damagePerTurn)
@@ -10,13 +10,4 @@ class BleedingEffect(duration: Int, val damagePerTurn: Long): Effect(duration) {
             remove(entity)
         }
     }
-
-    override fun apply(entity: Entity) {
-
-    }
-
-    override fun remove(entity: Entity) {
-        entity.removeEffect(this)
-    }
-
 }

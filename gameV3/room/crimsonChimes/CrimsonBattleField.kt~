@@ -1,0 +1,11 @@
+package gameV3.room.crimsonChimes
+
+import gameV3.main.Game
+import gameV3.room.Room
+
+class CrimsonField: Room(name = "Малиновое поле", description = "") {
+
+    override fun playerTurn(game: Game, room: Room) {
+
+    }
+}

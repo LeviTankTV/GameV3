@@ -8,6 +8,6 @@ class CrimsonChimesChestRoom(name: String = "Комната с сундуком"
     override fun playerTurn(game: Game, room: Room) {
         openChest(game, this)
         waitForEnter()
-        handleEmptyRoom(game)
+        game.moveForward()
     }
 }

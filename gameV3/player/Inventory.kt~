@@ -1,7 +1,10 @@
-package gameV3
+package gameV3.player
+
+import gameV3.item.Item
 
 class Inventory {
     private val items = mutableListOf<Item>()
+    private var activeTalisman: Item? = null
 
     fun addItem(item: Item) {
         items.add(item)

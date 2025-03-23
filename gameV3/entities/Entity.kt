@@ -14,11 +14,13 @@ open class Entity(
     var defensePower: Long,     // Сила защиты
     var level: Int,          // Уровень сущности
 ) {
-    val maxHealth = health
+    var maxHealth = health
 
     var effects = listOf<Effect>()
     var isDead: Boolean = false
     var incomeDamageIncreasePercentage: Double = 0.0
+    var isInvisible: Boolean = false
+    var weapon: Weapon? = null
 
     fun isAlive(): Boolean {
         if (health > 0) {
@@ -28,7 +30,7 @@ open class Entity(
     }
 
 
-    fun receiveDamage(weapon: Weapon?, damage: Long) {
+    open fun receiveDamage(weapon: Weapon?, damage: Long) {
         val actualDamage = damage - defensePower
         health -= if (actualDamage > 0) actualDamage else 0
     }
@@ -76,7 +78,9 @@ open class Entity(
         for (ally in game.player.allies) {
             targets.add(ally)
         }
-        targets.add(game.player)
+        if (!game.player.isInvisible) {
+            targets.add(game.player)
+        }
         targets.add(game.player.astral)
         return targets
     }
@@ -100,6 +104,7 @@ open class Entity(
 
     fun addEffect(effect: Effect) {
         effects += effect
+        effect.apply(this)
     }
 
     fun removeEffect(effect: Effect) {
