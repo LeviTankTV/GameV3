@@ -15,7 +15,7 @@ class CrimsonFieldOne() : Room(name = "Малиновое поле", description
         }
     }
 
-    private val factory = EntityFactory()
+    val factory = EntityFactory()
 
     private fun fillRoomWithEnemies(game: Game) {
         val rand = Random.nextInt(1, 7)

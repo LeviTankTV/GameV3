@@ -1,14 +1,14 @@
 package gameV3.room.crimsonChimes
 
 import gameV3.entities.EntityFactory
+import gameV3.entities.crimsonChimes.CrimsonWitch
 import gameV3.main.Game
 import gameV3.room.Room
 import kotlin.random.Random
 
-class CrimsonFieldOne() : Room(name = "Малиновое поле", description = "Первый уровень") {
-
+class CrimsonWitchHouse() : Room(name = "Дом ведьмы", description = "Уууууу!") {
     override fun playerTurn(game: Game, room: Room) {
-        fillRoomWithEnemies(game)
+        fillRoom(game)
         handleCombat(game, this)
         if (!hasEnemies()) {
             handleEmptyRoom(game)
@@ -17,9 +17,10 @@ class CrimsonFieldOne() : Room(name = "Малиновое поле", description
 
     private val factory = EntityFactory()
 
-    private fun fillRoomWithEnemies(game: Game) {
-        val rand = Random.nextInt(1, 7)
-        for (i in 1..rand) {
+    private fun fillRoom(game: Game) {
+        this.enemies.add(CrimsonWitch(level = game.player.level + Random.nextInt(-2, 2)))
+        val rand = Random.nextInt(3, 5)
+        repeat (rand) {
             this.enemies.add(factory.crimsonFieldOneGenerator(game))
         }
     }

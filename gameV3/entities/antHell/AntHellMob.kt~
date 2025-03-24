@@ -1,0 +1,6 @@
+package gameV3.entities.antHell
+
+import gameV3.entities.Entity
+
+class AntHellMob(name : ) : Entity(name, description, health, attackPower, defensePower, level) {
+}

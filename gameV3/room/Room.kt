@@ -10,7 +10,7 @@ abstract class Room(val name: String, val description: String) {
     var previousRoom: Room? = null
     var nextRoom: Room? = null
 
-    val itemFactory = Factories()
+    private val itemFactory: Factories = Factories()
 
     abstract fun playerTurn(game: Game, room: Room)
 
@@ -24,7 +24,7 @@ abstract class Room(val name: String, val description: String) {
 
     fun handleCombat(game: Game, room: Room) {
         when (game.gameStage) {
-            1 -> {
+            in -1..2 -> {
                 while (game.player.isAlive() && game.player.astral.isAlive() && room.hasEnemies()) {
                     game.player.updateEffects(game)
                     game.player.astral.updateEffects(game)
@@ -87,24 +87,11 @@ abstract class Room(val name: String, val description: String) {
         }
     }
 
-    fun openInventory(game: Game) {
-        val inventory = game.player.inventory
-        println("Ваш инвентарь:")
+    private fun useInventory(game: Game) {
 
-        inventory.listItems()
-
-        if (game.gameStage == 1) {
-            println("Вы слишком круты, чтобы взаимодействовать с инвентарем.")
-        } else {
-            println("Выберите действие:")
-            // Здесь вы можете добавить логику для выбора действия
-            // Например, вывести список действий и обработать выбор игрока
-        }
-
-        waitForEnter()
     }
 
-    fun showPlayerStats(game: Game) {
+    private fun showPlayerStats(game: Game) {
         val player = game.player
         println("Имя: ${player.name}")
         println("Здоровье: ${player.health}")
@@ -133,7 +120,7 @@ abstract class Room(val name: String, val description: String) {
                         game.moveBackward()
                     }
                     "3" -> showPlayerStats(game)
-                    "4" -> openInventory(game)
+                    "4" -> println("Вы слишком круты, чтобы взаимодействовать с инвентарем.")
                     "5" -> if (!game.usedAstralAdvice) {
                         astralAdvice(game)
                         game.usedAstralAdvice = true
@@ -162,7 +149,7 @@ abstract class Room(val name: String, val description: String) {
                         game.moveBackward()
                     }
                     "3" -> showPlayerStats(game)
-                    "4" -> openInventory(game)
+                    "4" -> useInventory(game)
                     "5" -> showAstralStats(game)
                     "6" -> showAlliesStats(game)
                     else -> println("Непонятная команда. Попробуйте снова.")
@@ -179,6 +166,25 @@ abstract class Room(val name: String, val description: String) {
             5 -> {
                 // Логика для стадии 5
                 println("Эта комната пуста, но вы можете продолжать исследовать.")
+            }
+            -1 -> {
+                println("Вы бродите по туннелям муравейника. Что вы хотите сделать?")
+                println("1. Бродить дальше по муравейнику")
+                println("2. Пойти назад по своим следам")
+                println("3. Поделать что-то в инвентаре")
+                println("4. Просмотреть статистику игрока")
+                println("5. Просмотреть статистику Астрала")
+                println("6. Просмотреть статистику союзников")
+
+                val input = readlnOrNull()?.toInt()
+                when (input) {
+                    1 -> game.moveForward()
+                    2 -> game.moveBackward()
+                    3 -> useInventory(game)
+                    4 -> showPlayerStats(game)
+                    5 -> showAstralStats(game)
+                    6 -> showAlliesStats(game)
+                }
             }
             else -> {
                 println("Эта комната пуста, но вы можете продолжать исследовать.")
@@ -249,6 +255,13 @@ abstract class Room(val name: String, val description: String) {
         val randomAdvice = adviceList.random()
         println("Совет: $randomAdvice")
     }
+
+    fun showEnemies() {
+        for (enemy in enemies) {
+            enemy.showStats()
+        }
+    }
+
     fun waitForEnter() {
         println("Нажмите Enter, чтобы продолжить...")
         readlnOrNull()

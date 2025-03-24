@@ -5,7 +5,7 @@ import gameV3.main.Game
 import gameV3.room.Room
 import kotlin.random.Random
 
-class CrimsonFieldOne() : Room(name = "Малиновое поле", description = "Первый уровень") {
+class CrimsonFieldTwo() : Room(name = "Малиновое поле", description = "Второй уровень") {
 
     override fun playerTurn(game: Game, room: Room) {
         fillRoomWithEnemies(game)
@@ -18,9 +18,9 @@ class CrimsonFieldOne() : Room(name = "Малиновое поле", description
     private val factory = EntityFactory()
 
     private fun fillRoomWithEnemies(game: Game) {
-        val rand = Random.nextInt(1, 7)
+        val rand = Random.nextInt(1, 5)
         for (i in 1..rand) {
-            this.enemies.add(factory.crimsonFieldOneGenerator(game))
+            this.enemies.add(factory.crimsonFieldTwoGenerator(game))
         }
     }
 }
