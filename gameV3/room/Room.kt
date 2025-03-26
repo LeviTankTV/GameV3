@@ -66,7 +66,9 @@ abstract class Room(val name: String, val description: String) {
                             // Проверяем, жив ли враг после действия
                             if (!enemy.isAlive()) {
                                 enemy.die(game) // Вызываем метод die() если враг мёртв
+                                this.enemies.remove(enemy)
                                 println("${enemy.name} был повержен!")
+
                             }
                         }
                     }
@@ -88,7 +90,18 @@ abstract class Room(val name: String, val description: String) {
     }
 
     private fun useInventory(game: Game) {
+        println("Вы в меню инвентаря.")
+        println("1. Экипировать / снять оружие")
+        println("2. Использовать предмет из инвентаря")
+        if (game.player.inventory.findAmulets()) {
+            println("3. Экипировать / снять амулет")
+        }
+        val input = readlnOrNull()?.toInt()
+        when (input) {
+            1 -> {
 
+            }
+        }
     }
 
     private fun showPlayerStats(game: Game) {

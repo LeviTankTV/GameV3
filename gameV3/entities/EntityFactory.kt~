@@ -1,5 +1,6 @@
 package gameV3.entities
 
+import gameV3.entities.antHell.*
 import gameV3.entities.crimsonChimes.*
 import gameV3.main.Game
 import kotlin.random.Random
@@ -50,7 +51,27 @@ class EntityFactory {
         return enemies[Random.nextInt(0, enemies.size)]
     }
 
-    
+    fun alarmAntGenerator(game: Game) : Entity {
+        val enemies = listOf(
+            BabyAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            DemolitionAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            ColossalAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            InvisibleAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            NinjaAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            RescueAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            SkeletonAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            SoldierAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            SpiritCrusherAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            ToxicAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            WizardAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            WorkerAnt(level = game.player.level + Random.nextInt(-2, 2)),
+            QueenAnt(level = game.player.level + Random.nextInt(-2, 2))
+        )
+
+        return enemies[Random.nextInt(0, enemies.size)]
+    }
+
+
 
 
 

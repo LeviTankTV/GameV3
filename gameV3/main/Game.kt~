@@ -22,8 +22,6 @@ class Game(var player: Player) {
     var usedAstralAdvice = false
     var darkForestRoomStepsCounter = 0
     var napCounter = 0
-    // Dark Forest Maze
-    var dlcRefused: Boolean = false
 
     fun generateDungeon() {
 

@@ -1,0 +1,6 @@
+package gameV3.entities.antHell
+
+import gameV3.entities.Entity
+
+class BabyAnt(name: String = 'Бейби Ант', description: String = 'Безобидный малыш', health: Long = 50, attackPower: Long = 0, defensePower: Long = 0, level: Int) : Entity(name, description, health, attackPower, defensePower, level) {
+}

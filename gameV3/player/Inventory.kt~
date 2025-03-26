@@ -13,6 +13,7 @@ class Inventory {
         println("Вы добавили ${item.name} в инвентарь.")
     }
 
+
     fun removeItem(item: Item) {
         if (items.contains(item)) {
             items.remove(item) // Remove the item from the list
@@ -78,4 +79,5 @@ class Inventory {
         } else {
             println("У вас нет ${weapon.name} в инвентаре.")
         }
+    }
 }

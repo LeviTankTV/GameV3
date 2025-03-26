@@ -20,6 +20,7 @@ open class Entity(
     var isDead: Boolean = false
     var incomeDamageIncreasePercentage: Double = 0.0
     var isInvisible: Boolean = false
+    var weapon: Weapon? = null
 
     fun isAlive(): Boolean {
         if (health > 0) {

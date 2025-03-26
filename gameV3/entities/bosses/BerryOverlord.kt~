@@ -1,0 +1,7 @@
+package gameV3.entities.bosses
+
+import gameV3.entities.Entity
+
+class BerryOverlord(name: String = "Ягодный Оверлорд", description: String = "Очень опасный босс", health: Long = 1000, attackPower: Long = 100, defensePower: Long = 100, level: Int) : Entity(name, description, health, attackPower, defensePower, level) {
+    
+}

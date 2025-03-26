@@ -1,6 +1,7 @@
 package gameV3.player
 
 import gameV3.item.Item
+import gameV3.item.Talisman
 
 class Inventory {
     private val items = mutableListOf<Item>()
@@ -13,7 +14,6 @@ class Inventory {
         println("Вы добавили ${item.name} в инвентарь.")
     }
 
-    fun eqiup
 
     fun removeItem(item: Item) {
         if (items.contains(item)) {
@@ -80,4 +80,9 @@ class Inventory {
         } else {
             println("У вас нет ${weapon.name} в инвентаре.")
         }
+    }
+
+    fun findAmulets(): Boolean {
+        return items.any { it is Talisman }
+    }
 }

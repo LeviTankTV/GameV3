@@ -90,7 +90,7 @@ open class Entity(
     }
 
     open fun dropLoot(game: Game) {
-        TODO("Implement this method in the subclass")
+        game.player.gold += Random.nextInt(50)
     }
 
     fun showStats() {

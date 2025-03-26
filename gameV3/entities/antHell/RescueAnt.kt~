@@ -1,0 +1,4 @@
+package gameV3.entities.antHell
+
+class RescueAnt() : Entity(name, description, health, attackPower, defensePower, level) {
+}

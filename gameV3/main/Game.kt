@@ -3,6 +3,7 @@ package gameV3.main
 import gameV3.player.Player
 import gameV3.room.Room
 import gameV3.room.antHell.AntHellEntrance
+import gameV3.room.antHell.AntHellRoomGenerator
 import gameV3.room.crimsonChimes.CrimsonChimesEntranceRoom
 import gameV3.room.crimsonChimes.CrimsonChimesRoomGenerator
 import gameV3.room.darkForest.DarkForestMaze
@@ -46,7 +47,7 @@ class Game(var player: Player) {
 //                gameStage == 5 -> .generateRoom()
 //                gameStage == 4 -> .generateRoom()
 //                gameStage == 3 -> .generateRoom()
-                gameStage == -1 -> TODO()
+                gameStage == -1 -> AntHellRoomGenerator().generateRoom()
                 gameStage == 2 && i == 15 -> AntHellEntrance()
                 gameStage == 2 -> CrimsonChimesRoomGenerator().generateRoom()
                 else -> darkForestRoomGenerator.generateRoom()

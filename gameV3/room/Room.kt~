@@ -88,7 +88,18 @@ abstract class Room(val name: String, val description: String) {
     }
 
     private fun useInventory(game: Game) {
-        if 
+        println("Вы в меню инвентаря.")
+        println("1. Экипировать / снять оружие")
+        println("2. Использовать предмет из инвентаря")
+        if (game.player.inventory.findAmulets()) {
+            println("3. Экипировать / снять амулет")
+        }
+        val input = readlnOrNull()?.toInt()
+        when (input) {
+            1 -> {
+
+            }
+        }
     }
 
     private fun showPlayerStats(game: Game) {
@@ -255,6 +266,13 @@ abstract class Room(val name: String, val description: String) {
         val randomAdvice = adviceList.random()
         println("Совет: $randomAdvice")
     }
+
+    fun showEnemies() {
+        for (enemy in enemies) {
+            enemy.showStats()
+        }
+    }
+
     fun waitForEnter() {
         println("Нажмите Enter, чтобы продолжить...")
         readlnOrNull()

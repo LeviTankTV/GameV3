@@ -10,7 +10,7 @@ import kotlin.random.Random
 
 class CrimsonPandoraBox: Item("Малиновый ящик пандоры", "Интересно...") {
 
-    fun use(game: Game) {
+    override fun use(game: Game) {
         val dropNumber = Random.nextInt(8)
         when (dropNumber) {
             0 -> game.player.inventory.addItem(CrimsonHealthPotion())
