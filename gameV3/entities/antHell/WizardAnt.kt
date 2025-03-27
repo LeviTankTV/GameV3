@@ -4,6 +4,7 @@ import gameV3.effects.BleedingEffect
 import gameV3.effects.BurningEffect
 import gameV3.effects.PoisonEffect
 import gameV3.entities.Entity
+import gameV3.item.other.WizardEgg
 import gameV3.main.Game
 import gameV3.room.Room
 import kotlin.random.Random
@@ -37,6 +38,15 @@ class WizardAnt(name: String = "Муравей - Волшебник", descriptio
                     println("Волшебник атакует ${target.name} бурей мгновенного урона.")
                 }
             }
+        }
+    }
+
+    override fun dropLoot(game: Game) {
+        super.dropLoot(game)
+
+        val random = Random
+        if (random.nextInt(10) == 0) {
+            game.player.inventory.addItem(WizardEgg())
         }
     }
 }

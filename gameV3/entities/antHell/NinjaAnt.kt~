@@ -11,7 +11,7 @@ class NinjaAnt(name : String = "Ниндзя Ант", description : String = "П
         val targets = getTargets(game)
         val target = targets[Random.nextInt(targets.size)]
         this.attack(null, target)
-        println("Ниндзя Ант атаковал ${target.name}.")
+        println("Ниндзя Ант атаковал ${target.name} сюрикеном.")
     }
 
     override fun receiveDamage(weapon: Weapon?, damage: Long) {

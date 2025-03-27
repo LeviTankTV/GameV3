@@ -1,6 +1,8 @@
 package gameV3.entities.antHell
 
 import gameV3.entities.Entity
+import gameV3.item.consumable.Leaf
+import gameV3.item.other.NinjaEgg
 import gameV3.item.weapon.Weapon
 import gameV3.main.Game
 import gameV3.room.Room
@@ -20,6 +22,18 @@ class NinjaAnt(name : String = "Ниндзя Ант", description : String = "П
             super.receiveDamage(weapon, damage)
         } else {
             println("Ниндзя Ант уклонился от удара.")
+        }
+    }
+
+    override fun dropLoot(game: Game) {
+        super.dropLoot(game)
+
+        val random = Random
+        if (random.nextInt(10) == 0) {
+            game.player.inventory.addItem(NinjaEgg())
+        }
+        if (random.nextInt(10) == 0) {
+            game.player.inventory.addItem(Leaf())
         }
     }
 }

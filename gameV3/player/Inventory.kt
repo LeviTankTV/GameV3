@@ -85,4 +85,10 @@ class Inventory {
     fun findAmulets(): Boolean {
         return items.any { it is Talisman }
     }
+
+    fun hasAncientKey(): Boolean {
+        return items.any { it.name == "Древний Ключ" }
+    }
+
+
 }

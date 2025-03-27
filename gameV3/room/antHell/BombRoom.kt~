@@ -1,0 +1,6 @@
+package gameV3.room.antHell
+
+import gameV3.room.Room
+
+class BombRoom() : Room(name = "Комната с бомбой", description = "Вы находитесь в комнате с бомбой") {
+}

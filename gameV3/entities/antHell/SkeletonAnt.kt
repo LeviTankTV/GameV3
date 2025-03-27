@@ -1,6 +1,7 @@
 package gameV3.entities.antHell
 
 import gameV3.entities.Entity
+import gameV3.item.other.SkeletonEgg
 import gameV3.item.weapon.Weapon
 import gameV3.main.Game
 import gameV3.room.Room
@@ -21,6 +22,15 @@ class SkeletonAnt(name: String = "Муравей - Скелет", description: S
             resurrect = true
             health = 125
             println("Муравей - Скелет восстал из мертвых.")
+        }
+    }
+
+    override fun dropLoot(game: Game) {
+        super.dropLoot(game)
+
+        val random = Random
+        if (random.nextInt(10) == 0) {
+            game.player.inventory.addItem(SkeletonEgg())
         }
     }
 }

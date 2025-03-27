@@ -2,6 +2,7 @@ package gameV3.entities.antHell
 
 import gameV3.entities.Entity
 import gameV3.entities.EntityFactory
+import gameV3.item.consumable.Corn
 import gameV3.main.Game
 import gameV3.room.Room
 import kotlin.random.Random
@@ -23,6 +24,15 @@ class AlarmAnt(name: String = "Муравей с мигалкой", description:
         val random = Random.nextInt(7)
         repeat(random) {
             room.enemies.add(factory.antGenerator(game))
+        }
+    }
+
+    override fun dropLoot(game: Game) {
+        super.dropLoot(game)
+        val random = Random.nextInt(10)
+        if (random == 0) {
+            game.player.inventory.addItem(Corn())
+            println("Вы получили Кукурузу.")
         }
     }
 

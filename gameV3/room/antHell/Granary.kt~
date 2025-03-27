@@ -1,0 +1,16 @@
+package gameV3.room.antHell
+
+import gameV3.main.Game
+import gameV3.room.Room
+
+class Granary() : Room(name = "Кладовая", description = "Вы находитесь в кладовой") {
+    override fun playerTurn(game: Game, room: Room) {
+        fillRoom(game)
+    }
+    
+    private fun fillRoom(game: Game) {
+        for(i in 1..6) {
+
+        }
+    }
+}

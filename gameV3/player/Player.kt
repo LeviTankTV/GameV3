@@ -2,6 +2,7 @@ package gameV3.player
 
 import gameV3.entities.Entity
 import gameV3.entities.allies.Ally
+import gameV3.item.Item
 import gameV3.main.Game
 import gameV3.room.Room
 import kotlin.random.Random
@@ -19,14 +20,14 @@ class Player(
 //    var allies: List<Ally>
 ) : Entity(name, description, health, attackPower, defensePower, level) {
     var inventory = Inventory()
-    var allies = listOf<Ally>()
+    var allies = mutableListOf<Entity>()
     var astral = Astral()
 
-    fun addAlly(ally: Ally) {
+    fun addAlly(ally: Entity) {
         allies = (allies + ally).toMutableList()
     }
 
-    fun removeAlly(ally: Ally) {
+    fun removeAlly(ally: Entity) {
         allies = (allies - ally).toMutableList()
     }
     fun addXP(xp: Int) {

@@ -1,0 +1,14 @@
+package gameV3.room.antHell
+
+import gameV3.main.Game
+import gameV3.room.Room
+
+class ToxicRoom() : Room(name = "Токсичная комната", description = "Токсичная комната") {
+    override fun playerTurn(game: Game, room: Room) {
+        fillRoom(game)
+        handleCombat(game, this)
+        if (!hasEnemies()) {
+            handleEmptyRoom(game)
+        }
+    }
+}

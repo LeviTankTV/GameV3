@@ -1,0 +1,4 @@
+package gameV3.item.other
+
+class BabyEgg() : Item(name = "Яйцо призыва Baby Ant", description = "Из этого может вылупиться что-то интересное...") {
+}

@@ -1,0 +1,4 @@
+package gameV3.item.consumable
+
+class Wing() : Consumable(name = "Крылышки", description = "Вкусные крылышки"){
+}

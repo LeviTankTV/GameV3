@@ -29,10 +29,20 @@ abstract class Room(val name: String, val description: String) {
                     game.player.updateEffects(game)
                     game.player.astral.updateEffects(game)
 
+                    if (!game.player.isAlive()) {
+                        handlePlayerDeath(game)
+                    }
+
                     // Обновляем эффекты союзников
                     if (game.player.allies.isNotEmpty()) {
                         for (ally in game.player.allies) {
                             ally.updateEffects(game)
+                        }
+                    }
+
+                    for (ally in game.player.allies) {
+                        if (!ally.isAlive()) {
+                            game.player.removeAlly(ally)
                         }
                     }
 
@@ -102,6 +112,10 @@ abstract class Room(val name: String, val description: String) {
 
             }
         }
+    }
+
+    fun handlePlayerDeath(game: Game) {
+        TODO("Not yet implemented")
     }
 
     private fun showPlayerStats(game: Game) {

@@ -1,6 +1,7 @@
 package gameV3.entities.antHell
 
 import gameV3.entities.Entity
+import gameV3.item.other.InvisibleEgg
 import gameV3.item.weapon.Weapon
 import gameV3.main.Game
 import gameV3.room.Room
@@ -19,6 +20,15 @@ class InvisibleAnt(name: String = "Невидимый Ант", description: Stri
             super.receiveDamage(weapon, damage)
         } else {
             println("Невидимый Ант не получил урона.")
+        }
+    }
+
+    override fun dropLoot(game: Game) {
+        super.dropLoot(game)
+
+        val random = Random
+        if (random.nextInt(10) == 0) {
+            game.player.inventory.addItem(InvisibleEgg())
         }
     }
 }

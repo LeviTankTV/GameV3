@@ -7,7 +7,7 @@ import kotlin.system.exitProcess
 
 class CrimsonChimesRoomGenerator : RoomGenerator {
     override fun generateRoom(): Room {
-        val random = Random.nextInt(9)
+        val random = Random.nextInt(10)
         return when (random) {
             0 -> CrimsonChimesChestRoom()
             1 -> SuperBeetleField()
@@ -18,6 +18,7 @@ class CrimsonChimesRoomGenerator : RoomGenerator {
             6 -> CrimsonFieldOne()
             7 -> CrimsonFieldTwo()
             8 -> BeetleField()
+            9 -> DarkRoom()
 
             else -> exitProcess(1)
         }

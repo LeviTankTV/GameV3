@@ -1,0 +1,4 @@
+package gameV3.entities.allies.summonable
+
+class ToxicAntAlly {
+}
