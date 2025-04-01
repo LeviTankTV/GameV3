@@ -1,0 +1,12 @@
+package gameV3.player.spells
+
+import gameV3.entities.Entity
+import gameV3.main.Game
+import gameV3.room.Room
+
+class HealSpell() : Spell(name = "Магия Лечения") {
+    override fun cast(game: Game, room: Room, target: Entity) {
+        target.health += target.level * 10
+        println("${target.name} восстановил здоровье!")
+    }
+}

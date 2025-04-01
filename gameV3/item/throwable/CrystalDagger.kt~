@@ -1,0 +1,6 @@
+package gameV3.item.throwable
+
+import gameV3.item.Throwable
+
+class CrystalDagger: Throwable(name = "Кристальный кинжал", description = "Кристальный кинжал") {
+}

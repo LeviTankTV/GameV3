@@ -4,6 +4,7 @@ import gameV3.entities.Entity
 import gameV3.item.Factories
 import gameV3.main.Game
 import gameV3.room.crimsonChimes.CrimsonChimesChestRoom
+import kotlin.random.Random
 
 abstract class Room(val name: String, val description: String) {
     var enemies: MutableList<Entity> = mutableListOf();
@@ -22,14 +23,24 @@ abstract class Room(val name: String, val description: String) {
         enemies.clear()
     }
 
+    private var tsce = 0
+
     fun handleCombat(game: Game, room: Room) {
-        when (game.gameStage) {
-            in -1..2 -> {
                 while (game.player.isAlive() && game.player.astral.isAlive() && room.hasEnemies()) {
                     game.player.updateEffects(game)
                     game.player.astral.updateEffects(game)
 
-                    if (!game.player.isAlive()) {
+                    // Special Events
+
+                    if (game.gameStage == 3) {
+                        tsce++
+                        if (tsce == 2) {
+                            thirdStageSpecialEvent(game)
+                            tsce = 0
+                        }
+                    }
+
+                    if (!game.player.isAlive() || !game.player.astral.isAlive()) {
                         handlePlayerDeath(game)
                     }
 
@@ -40,6 +51,11 @@ abstract class Room(val name: String, val description: String) {
                         }
                     }
 
+                    var playerActionCompleted = false
+                    while (!playerActionCompleted) {
+                        playerActionCompleted = game.player.playerAction(game, room)
+                    }
+
                     for (ally in game.player.allies) {
                         if (!ally.isAlive()) {
                             game.player.removeAlly(ally)
@@ -48,7 +64,7 @@ abstract class Room(val name: String, val description: String) {
 
                     // Игрок выполняет свои действия
                     game.player.astral.performAction(game, room)
-                    game.player.performAction(game, room)
+
 
                     // Действия союзников
                     if (game.player.allies.isNotEmpty()) {
@@ -75,7 +91,7 @@ abstract class Room(val name: String, val description: String) {
 
                             // Проверяем, жив ли враг после действия
                             if (!enemy.isAlive()) {
-                                enemy.die(game) // Вызываем метод die() если враг мёртв
+                                enemy.die(game, room) // Вызываем метод die() если враг мёртв
                                 this.enemies.remove(enemy)
                                 println("${enemy.name} был повержен!")
 
@@ -85,8 +101,25 @@ abstract class Room(val name: String, val description: String) {
 
                     waitForEnter()
                 }
+    }
+
+    private fun thirdStageSpecialEvent(game: Game) {
+        val targets = getTargets(game)
+        val target = targets[Random.nextInt(targets.size)]
+        target.health -= target.level * 8
+        println("${target.name} получает урон от падающих капельников!")
+    }
+
+    fun getTargets(game: Game): List<Entity> {
+        val targets = mutableListOf<Entity>()
+        for (ally in game.player.allies) {
+            if (ally.isAlive()) {
+                targets.add(ally)
             }
         }
+        targets.add(game.player)
+        targets.add(game.player.astral)
+        return targets
     }
 
     fun openChest(game: Game, room: Room) {
@@ -183,8 +216,29 @@ abstract class Room(val name: String, val description: String) {
                 }
             }
             3 -> {
-                // Логика для стадии 3
-                println("Эта комната пуста, но вы можете продолжать исследовать.")
+                    println("Вы продолжаете идти по кристальной пещере. Выберите действие:")
+                    println("1. Идти дальше по пещере")
+                    println("2. Вернуться назад")
+                    println("3. Показать статистику игрока")
+                    println("4. Поделать что-то в инвентаре")
+                    println("5. Просмотреть статистику Астрала")
+                    println("6. Просмотреть статистику союзников")
+
+                    val input = readlnOrNull()
+                    when (input) {
+                        "1" -> {
+                            game.moveForward()
+                        }
+                        "2" -> {
+                            game.moveBackward()
+                        }
+                        "3" -> showPlayerStats(game)
+                        "4" -> useInventory(game)
+                        "5" -> showAstralStats(game)
+                        "6" -> showAlliesStats(game)
+                        else -> println("Непонятная команда. Попробуйте снова.")
+                    }
+
             }
             4 -> {
                 // Логика для стадии 4

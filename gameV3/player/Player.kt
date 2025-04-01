@@ -2,7 +2,9 @@ package gameV3.player
 
 import gameV3.entities.Entity
 import gameV3.entities.allies.Ally
-import gameV3.item.Item
+import gameV3.item.*
+import gameV3.item.Throwable
+import gameV3.item.weapon.Weapon
 import gameV3.main.Game
 import gameV3.room.Room
 import kotlin.random.Random
@@ -15,13 +17,23 @@ class Player(
     defensePower: Long = 5,
     level: Int = 100,
     var experience: Int = 0,
-    var gold: Int = 0
+    var gold: Int = 0,
+    var mana: Int = 0
+
 //    var inventory: Inventory,
 //    var allies: List<Ally>
 ) : Entity(name, description, health, attackPower, defensePower, level) {
     var inventory = Inventory()
     var allies = mutableListOf<Entity>()
     var astral = Astral()
+
+    fun addMana(mana: Int) {
+        this.mana += mana
+    }
+
+    fun removeMana(mana: Int) {
+        this.mana -= mana
+    }
 
     fun addAlly(ally: Entity) {
         allies = (allies + ally).toMutableList()
@@ -52,14 +64,11 @@ class Player(
 
 
 
-    override fun performAction(game: Game, room: Room) {
+    fun playerAction(game: Game, room: Room) : Boolean  {
 
         when (game.gameStage) {
             1 -> {
                 val enemies = room.enemies
-                val allies = this.allies
-                val mainRootDefense = 100000
-                val mainRootVulnerableDefense = 200
 
                 // Переменные для отслеживания статуса корней
                 var sideRoot1Broken = false
@@ -67,7 +76,6 @@ class Player(
                 var sideRoot3Broken = false
                 var sideRoot4Broken = false
                 var sideRoot5Broken = false
-                var mainRootVulnerable = false // Флаг, что главный корень уязвим
 
                 while (enemies[0].health > 0) { // Пока враг (главный корень) жив
                     val phrases = mutableListOf(
@@ -190,7 +198,6 @@ class Player(
 
                     // Проверяем, все ли боковые корни сломаны
                     if (sideRoot1Broken && sideRoot2Broken && sideRoot3Broken && sideRoot4Broken && sideRoot5Broken) {
-                        mainRootVulnerable = true
                         enemies[0].defensePower = 200
                         println("Все побочные корни сломаны! Главный корень становится уязвимым!")
 
@@ -230,7 +237,7 @@ class Player(
 
                                         if (enemies.isEmpty()) {
                                             println("Вы победили!")
-                                            return
+                                            return true
                                         }
                                     }
 
@@ -238,7 +245,7 @@ class Player(
                                     if (targetEnemy.health <= 0 && enemyChoice -1 == 0) {
                                         println("Вы убили ${targetEnemy.name}!")
                                         println("Вы победили!")
-                                        return
+                                        return true
                                     }
                                 } else {
                                     println("Неверный выбор врага. Попробуйте снова.")
@@ -280,7 +287,7 @@ class Player(
 
                             when (choice3) {
                                 1 -> {
-                                    if(!sideRoot1Broken){
+                                    if (!sideRoot1Broken) {
                                         val chance = Random.nextInt(1, 101)
                                         if (chance <= 40) {
                                             sideRoot1Broken = true
@@ -288,12 +295,12 @@ class Player(
                                         } else {
                                             println("Вы не смогли сломать побочный корень 1.")
                                         }
-                                    }else {
+                                    } else {
                                         println("Неверный выбор. Попробуйте снова.")
                                     }
                                 }
                                 2 -> {
-                                    if(!sideRoot2Broken){
+                                    if (!sideRoot2Broken) {
                                         val chance = Random.nextInt(1, 101)
                                         if (chance <= 25) {
                                             sideRoot2Broken = true
@@ -314,7 +321,7 @@ class Player(
                                         } else {
                                             println("Вы не смогли сломать побочный корень 3.")
                                         }
-                                    }else {
+                                    } else {
                                         println("Неверный выбор. Попробуйте снова.")
                                     }
                                 }
@@ -361,13 +368,96 @@ class Player(
                     if (enemies[0].health <= 0) {
                         println("Вы победили Сердце Леса!")
                         room.clearEnemies()
-                        break
+                        return true
                     }
                 }
             }
 
             2 -> {
+                println("Бой в малиновом лесу продолжается. Выберите действие:")
+                println("1. Атаковать")
+                println("2. Использовать инвентарь")
+                println("3. Посмотреть характеристику игрока")
+                println("4. Посмотреть характеристику астрала")
+                println("4. Посмотреть характеристику врагов")
 
+                var choice = readlnOrNull()?.toIntOrNull() ?: -1 // Обработка ввода пользователя
+
+                when (choice) {
+                    1 -> {
+                        println("Выберите врага:")
+                        for (enemy in room.enemies) {
+                            println("${room.enemies.indexOf(enemy) + 1}. ${enemy.name}")
+                        }
+                        val enemyChoice = readlnOrNull()?.toIntOrNull() ?: -1 // Обработка ввода пользователя
+                        if (enemyChoice in 1..room.enemies.size) {
+                            val enemy = room.enemies[enemyChoice - 1]
+                            attack(weapon, enemy)
+                            return true
+                        } else {
+                            println("Неверный выбор. Попробуйте снова.")
+                        }
+                    }
+                    2 -> {
+                        useInventory(game, room)
+                    }
+                    3 -> {
+                        showPlayerStats(game)
+                    }
+                    4 -> {
+                        showAstralStats(game)
+                    }
+                    5 -> {
+                        showEnemiesStats(room)
+                    }
+                    else -> {
+                        println("Неверный выбор. Попробуйте снова.")
+                    }
+                }
+
+            }
+
+            -1 -> {
+                println("Бой в муравейнике продолжается. Выберите действие:")
+                println("1. Атаковать")
+                println("2. Использовать инвентарь")
+                println("3. Посмотреть характеристику игрока")
+                println("4. Посмотреть характеристику астрала")
+                println("4. Посмотреть характеристику врагов")
+
+                var choice = readlnOrNull()?.toIntOrNull() ?: -1 // Обработка ввода пользователя
+
+                when (choice) {
+                    1 -> {
+                        println("Выберите врага:")
+                        for (enemy in room.enemies) {
+                            println("${room.enemies.indexOf(enemy) + 1}. ${enemy.name}")
+                        }
+                        val enemyChoice = readlnOrNull()?.toIntOrNull() ?: -1 // Обработка ввода пользователя
+                        if (enemyChoice in 1..room.enemies.size) {
+                            val enemy = room.enemies[enemyChoice - 1]
+                            attack(weapon, enemy)
+                            return true
+                        } else {
+                            println("Неверный выбор. Попробуйте снова.")
+                        }
+                    }
+                    2 -> {
+                        useInventory(game, room)
+                    }
+                    3 -> {
+                        showPlayerStats(game)
+                    }
+                    4 -> {
+                        showAstralStats(game)
+                    }
+                    5 -> {
+                        showEnemiesStats(room)
+                    }
+                    else -> {
+                        println("Неверный выбор. Попробуйте снова.")
+                    }
+                }
             }
 
             3 -> {
@@ -382,6 +472,144 @@ class Player(
 
             }
         }
+        return true
+    }
+
+    private fun showPlayerStats(game: Game) {
+        println("Имя: ${game.player.name}")
+        println("Здоровье: ${game.player.health}")
+        println("Уровень: ${game.player.level}")
+        println("Опыт: ${game.player.experience}")
+        println("Оружие: ${game.player.weapon?.name}")
+        println("Сила атаки: ${game.player.attackPower}")
+        println("Защита: ${game.player.defensePower}")
+    }
+
+    private fun showAstralStats(game: Game) {
+        println("Имя: ${game.player.astral.name}")
+        println("Здоровье: ${game.player.astral.health}")
+    }
+
+    private fun showEnemiesStats(room: Room) {
+        for (enemy in room.enemies) {
+            println("Имя: ${enemy.name}")
+            println("Здоровье: ${enemy.health}")
+            println("Уровень: ${enemy.level}")
+        }
+    }
+
+    private fun useInventory(game: Game, room: Room) {
+        println("Вы в меню инвентаря. Выберите действие:")
+        println("1. Экипировать / снять оружие")
+        println("2. Использовать предмет из инвентаря")
+        if (game.player.inventory.findAmulets()) {
+            println("3. Экипировать / снять амулет")
+        }
+        val input = readlnOrNull()?.toInt()
+        when (input) {
+            1 -> {
+                println("Ваше текущее оружие: ${game.player.weapon?.name}")
+                println("Выберите действие:")
+                println("1. Экипировать оружие")
+                println("2. Снять оружие")
+                val weaponChoice = readlnOrNull()?.toInt()
+                when (weaponChoice) {
+                    1 -> {
+                        println("Выберите оружие из инвентаря:")
+                        for (item in game.player.inventory.items) {
+                            if (item is Weapon) {
+                                println("${game.player.inventory.items.indexOf(item) + 1}. ${item.name}")
+                            }
+                        }
+                        val itemChoice = readlnOrNull()?.toInt()
+                        if (itemChoice != null) {
+                            val item = game.player.inventory.items[itemChoice - 1]
+                            if (item is Weapon) {
+                                game.player.weapon = item
+                                game.player.inventory.removeItem(item)
+                            }
+                        }
+                    }
+                    2 -> {
+                        weapon?.let { game.player.inventory.addItem(it) }
+                        game.player.weapon = null
+                    }
+                    else -> println("Неверный выбор. Попробуйте снова.")
+                }
+            }
+            2 -> {
+                println("Выберите предмет из инвентаря:")
+                for (item in game.player.inventory.items) {
+                    println("${game.player.inventory.items.indexOf(item) + 1}. ${item.name}")
+                }
+                val itemChoice = readlnOrNull()?.toInt()
+                if (itemChoice != null) {
+                    when (val item = game.player.inventory.items[itemChoice - 1]) {
+                        is Consumable -> item.eat(game)
+                        is Throwable -> {
+                            println("Выберите врага:")
+                            for (enemy in room.enemies) {
+                                println("${room.enemies.indexOf(enemy) + 1}. ${enemy.name}")
+                            }
+                            val enemyChoice = readlnOrNull()?.toIntOrNull() ?: -1 // Обработка ввода пользователя
+                            if (enemyChoice in 1..room.enemies.size) {
+                                val enemy = room.enemies[enemyChoice - 1]
+                                item.throwAt(enemy)
+                                game.player.inventory.removeItem(item)
+                            }
+                        }
+                        is Weapon -> {
+                            println("Вы не можете использовать оружие в инвентаре.")
+                        }
+                        is MultiThrowable -> {
+                            item.throwAt(room.enemies)
+                            game.player.inventory.removeItem(item)
+                        }
+                        else -> {
+                            item.use(game)
+                            game.player.inventory.removeItem(item)
+                        }
+                    }
+                }
+            }
+            3 -> {
+                println("Текущий талисман: ${game.player.inventory.activeTalisman?.name}")
+                println("Выберите действие:")
+                println("1. Экипировать талисман")
+                println("2. Снять талисман")
+                val talismanChoice = readlnOrNull()?.toInt()
+                when (talismanChoice) {
+                    1 -> {
+                        println("Выберите талисман из инвентаря:")
+                        for (item in game.player.inventory.items) {
+                            if (item is Talisman) {
+                                println("${game.player.inventory.items.indexOf(item) + 1}. ${item.name}")
+                            }
+                        }
+                        val itemChoice = readlnOrNull()?.toInt()
+                        if (itemChoice != null) {
+                            val item = game.player.inventory.items[itemChoice - 1]
+                            if (item is Talisman) {
+                                game.player.inventory.removeItem(item)
+                                game.player.inventory.addItem(game.player.inventory.activeTalisman!!)
+                                game.player.inventory.activeTalisman = item
+                                item.equip(game)
+                            }
+                        }
+                    }
+                    2 -> {
+                        if (game.player.inventory.activeTalisman != null) {
+                            (game.player.inventory.activeTalisman as Talisman).unequip(game)
+                            game.player.inventory.addItem(game.player.inventory.activeTalisman!!)
+                            game.player.inventory.activeTalisman = null
+                        }
+                    }
+                }
+            }
+            else -> println("Неверный выбор. Попробуйте снова.")
+        }
+
+
     }
 
 

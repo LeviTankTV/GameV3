@@ -1,0 +1,4 @@
+package gameV3.entities.crystalCavern
+
+class CrystalDragon(name: String = "Кристальный Дракон", description: String = "Очень опасный дракон", health: Long = 750, attackPower: Long = 30, defensePower: Long = 40, level: Int) : CrystalMob(name, description, health, attackPower, defensePower, level) {
+}

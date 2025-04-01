@@ -35,7 +35,7 @@ open class Entity(
         health -= if (actualDamage > 0) actualDamage else 0
     }
 
-    fun die(game: Game) {
+    open fun die(game: Game, room: Room) {
         isDead = true
         game.player.addXP(level * 10)
         dropLoot(game)

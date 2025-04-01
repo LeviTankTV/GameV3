@@ -1,0 +1,4 @@
+package gameV3.item.other
+
+class IronBar: Item(name = "Железная Штука", description = "Ценный Ресурс") {
+}

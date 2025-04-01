@@ -4,8 +4,8 @@ import gameV3.item.Item
 import gameV3.item.Talisman
 
 class Inventory {
-    private val items = mutableListOf<Item>()
-    private var activeTalisman: Item? = null // Поле для хранения активного талисмана
+    val items = mutableListOf<Item>()
+    var activeTalisman: Item? = null // Поле для хранения активного талисмана
     var weapon: Item? = null
 
 
