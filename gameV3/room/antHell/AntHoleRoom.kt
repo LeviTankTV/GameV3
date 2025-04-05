@@ -26,9 +26,7 @@ class AntHoleRoom() : Room(name = "Комната с муравьями", descri
             Thread.sleep(2000)
             waitForEnter()
 
-            game.gameStage = 3
-            game.generateDungeon()
-            game.currentRoom = game.visitedRooms[0]
+            game.gameTransition(3)
         }
     }
 }

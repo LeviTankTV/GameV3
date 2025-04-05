@@ -1,6 +1,7 @@
 package gameV3.room.crimsonChimes
 
 import gameV3.entities.bosses.BerryOverlord
+import gameV3.entities.crimsonChimes.CrimsonWraith
 import gameV3.item.keys.AncientKey
 import gameV3.main.Game
 import gameV3.player.Inventory
@@ -25,6 +26,8 @@ class DarkRoom() : Room(name = "Темная комната", description = "В�
                 println("Время битвы!")
                 waitForEnter()
                 this.enemies.add(BerryOverlord(level = game.player.level + Random.nextInt(-2, 2)))
+                this.enemies.add(CrimsonWraith(level = game.player.level + Random.nextInt(-2, 2)))
+                this.enemies.add(CrimsonWraith(level = game.player.level + Random.nextInt(-2, 2)))
                 handleCombat(game, room)
                 if (!hasEnemies()) {
                     println("Вы победили ягодного лорда и видите впереди кристальную пещеру.")
@@ -42,7 +45,7 @@ class DarkRoom() : Room(name = "Темная комната", description = "В�
 
     fun removeAncientKeyFromInventory(inventory: Inventory) {
         // Ищем ключ в инвентаре
-        val ancientKey = inventory.getItems().find { it is AncientKey }
+        val ancientKey = inventory.items.find { it is AncientKey }
         if (ancientKey != null) {
             inventory.removeItem(ancientKey) // Удаляем ключ из инвентаря
         } else {

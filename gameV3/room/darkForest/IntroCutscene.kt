@@ -24,11 +24,7 @@ class IntroCutscene(name: String, description: String) : Room(name, description)
         waitForEnter()
 
         // Устанавливаем новый gameStage
-        game.gameStage = 1
-
-        // Генерируем новые комнаты и переходим в следующую
-        game.generateDungeon()
-        game.moveForward()
+        game.gameTransition(1)
 
     }
 

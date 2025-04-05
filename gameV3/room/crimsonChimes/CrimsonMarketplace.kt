@@ -110,7 +110,7 @@ class CrimsonMarketplace : Room(name = "Малиновый Рынок", descript
             return
         }
 
-        val playerInventoryList = game.player.inventory.getItems()  // Get the list of items
+        val playerInventoryList = game.player.inventory.items // Get the list of items
 
         for ((index, item) in playerInventoryList.withIndex()) {
             println("${index + 1}. ${item.name} - ${getItemPrice(item) / 2} золота") // Продажа вдвое дешевле покупки

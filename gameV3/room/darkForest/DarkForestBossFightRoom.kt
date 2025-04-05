@@ -66,9 +66,7 @@ class DarkForestBossFightRoom(name: String, description: String) : Room(name, de
         waitForEnter()
 
         // Переход в следующую комнату
-        game.gameStage = 2
-        game.generateDungeon()
-        game.currentRoom = game.visitedRooms[0]
+        game.gameTransition(2)
 
     }
 }

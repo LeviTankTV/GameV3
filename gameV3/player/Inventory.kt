@@ -14,6 +14,10 @@ class Inventory {
         println("Вы добавили ${item.name} в инвентарь.")
     }
 
+    fun sneakyAddItem(item: Item) {
+        items.add(item)
+    }
+
 
     fun removeItem(item: Item) {
         if (items.contains(item)) {
@@ -28,12 +32,6 @@ class Inventory {
             println("У вас нет ${item.name} в инвентаре.")
         }
     }
-
-
-    fun getItems(): List<Item> {
-        return items.toList() // Return a copy to prevent external modification
-    }
-
 
     fun isEmpty(): Boolean {
         return items.isEmpty()

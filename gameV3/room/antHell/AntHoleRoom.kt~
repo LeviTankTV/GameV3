@@ -25,7 +25,10 @@ class AntHoleRoom() : Room(name = "Комната с муравьями", descri
             println("Впереди вы видите кристальную пещеру...")
             Thread.sleep(2000)
             waitForEnter()
-            TODO("Переход в следующую комнату")
+
+            game.gameStage = 3
+            game.generateDungeon()
+            game.currentRoom = game.visitedRooms[0]
         }
     }
 }

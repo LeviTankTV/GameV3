@@ -2,6 +2,7 @@ package gameV3.entities
 
 import gameV3.entities.antHell.*
 import gameV3.entities.crimsonChimes.*
+import gameV3.entities.crystalCavern.*
 import gameV3.main.Game
 import kotlin.random.Random
 
@@ -71,7 +72,40 @@ class EntityFactory {
         return enemies[Random.nextInt(0, enemies.size)]
     }
 
+    fun caveCrystalGenerator(game: Game) : Entity {
+        val enemies = listOf(
+            CaveCrystalGryphon(level = game.player.level + Random.nextInt(-2, 2)),
+            CaveCrystalSpider(level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalBigSlime( level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalDragon(level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalGuardian(level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalManticore(level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalMediumSlime(level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalPredator(level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalPriest(level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalRhinocerosBeetle(level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalSmallSlime(level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalTroll(level = game.player.level + Random.nextInt(-2, 2)),
+            CrystalVampire(level = game.player.level + Random.nextInt(-2, 2)),
+            FireGuardian(level = game.player.level + Random.nextInt(-2, 2)),
+            GlowCrystalWorm(level = game.player.level + Random.nextInt(-2, 2)),
+            GlowingCrystalLizard(level = game.player.level + Random.nextInt(-2, 2)),
+            GlowingCrystalSpirit(level = game.player.level + Random.nextInt(-2, 2)),
+            HeadyCrystalSpirit(level = game.player.level + Random.nextInt(-2, 2)),
+            IgneousCrystal(level = game.player.level + Random.nextInt(-2, 2)),
+            LavaCrystal(level = game.player.level + Random.nextInt(-2, 2)),
+            LavaSpirit(level = game.player.level + Random.nextInt(-2, 2)),
+            RockCrystal(level = game.player.level + Random.nextInt(-2, 2)),
+            ShadowCrystalWarrior(level = game.player.level + Random.nextInt(-2, 2)),
+            ShadowCrystalSpirit(level = game.player.level + Random.nextInt(-2, 2)),
+            ShinyBug(level = game.player.level + Random.nextInt(-2, 2)),
+            ShinyGolem(level = game.player.level + Random.nextInt(-2, 2)),
+            SlidingCrystalWorm(level = game.player.level + Random.nextInt(-2, 2))
+        )
 
+        return enemies[Random.nextInt(0, enemies.size)]
+
+    }
 
 
 

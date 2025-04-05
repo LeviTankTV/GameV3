@@ -1,0 +1,18 @@
+package gameV3.room.crystalCave
+
+import gameV3.main.Game
+import gameV3.room.Room
+
+class EchoFlowersRoom: Room(name = "Комната с Эхо - Цветами", description = "Вы находитесь в комнате с Эхо - Цветами") {
+    override fun playerTurn(game: Game, room: Room) {
+        when (game.echoCounter) {
+            0 -> {
+                println("Вы можете услышать часть разговора каких-то существ")
+
+                game.echoCounter++
+                handleEmptyRoom(game)
+            }
+
+        }
+    }
+}

@@ -35,9 +35,7 @@ class DarkRoom() : Room(name = "Темная комната", description = "В�
                     println("Вы отправляетесь в новую часть вашего путешествия.")
                     waitForEnter()
                     // Переход к следующему этапу
-                    game.gameStage = 3
-                    game.generateDungeon()
-                    game.currentRoom = game.visitedRooms[0]
+                    game.gameTransition(3)
                 }
             }
         }
@@ -45,7 +43,7 @@ class DarkRoom() : Room(name = "Темная комната", description = "В�
 
     fun removeAncientKeyFromInventory(inventory: Inventory) {
         // Ищем ключ в инвентаре
-        val ancientKey = inventory.getItems().find { it is AncientKey }
+        val ancientKey = inventory.items.find { it is AncientKey }
         if (ancientKey != null) {
             inventory.removeItem(ancientKey) // Удаляем ключ из инвентаря
         } else {

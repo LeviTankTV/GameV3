@@ -33,6 +33,7 @@ abstract class Room(val name: String, val description: String) {
                     // Special Events
 
                     if (game.gameStage == 3) {
+                        game.player.mana += 10
                         tsce++
                         if (tsce == 2) {
                             thirdStageSpecialEvent(game)

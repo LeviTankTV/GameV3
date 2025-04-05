@@ -6,6 +6,8 @@ import gameV3.room.antHell.AntHellEntrance
 import gameV3.room.antHell.AntHellRoomGenerator
 import gameV3.room.crimsonChimes.CrimsonChimesEntranceRoom
 import gameV3.room.crimsonChimes.CrimsonChimesRoomGenerator
+import gameV3.room.crystalCave.CrystalCaveEntrance
+import gameV3.room.crystalCave.CrystalCavesRoomGenerator
 import gameV3.room.darkForest.DarkForestMaze
 import gameV3.room.darkForest.DarkForestRoom
 import gameV3.room.darkForest.DarkForestRoomGenerator
@@ -14,15 +16,18 @@ import java.util.*
 import kotlin.system.exitProcess
 
 class Game(var player: Player) {
-//    private var currentRoom: Room = DarkForestRoom("Лес Темноты", "Вы оказались в Лесу Темноты. Территория изменилась до неузнаваемости.")
+
     var currentRoom: Room? = null
     var previousRoom: Room? = null
     var gameStage = 0;
     var visitedRooms: LinkedList<Room> = LinkedList()
+    private val roomManager = RoomManager()
 
     var usedAstralAdvice = false
     var darkForestRoomStepsCounter = 0
     var napCounter = 0
+    var echoCounter = 0
+    var escapedMindJail = false
 
     fun generateDungeon() {
 
@@ -31,7 +36,7 @@ class Game(var player: Player) {
         val firstRoom: Room = when {
 //            gameStage == 5 -> TrueCastleEntranceRoom() // Пример для пятой стадии
 //            gameStage == 4 -> FourthGamePartRoom() // Пример для четвертой стадии
-//            gameStage == 3 -> ThirdGamePartRoom() // Пример для третьей стадии
+            gameStage == 3 -> CrystalCaveEntrance() // Пример для третьей стадии
             gameStage == -1 -> AntHellEntrance()
             gameStage == 2 -> CrimsonChimesEntranceRoom() // Пример для второй стадии
             gameStage == 1 -> DarkForestRoom("Лес Темноты", "Вы оказались в Лесу Темноты. Территория изменилась до неузнаваемости.") // Первая стадия
@@ -40,13 +45,15 @@ class Game(var player: Player) {
 
         visitedRooms.clear()
         visitedRooms.add(firstRoom)
+        roomManager.addRoom(firstRoom)
+
         var previousRoom: Room = firstRoom
 
         for (i in 1..<600) {
             val newRoom: Room = when {
 //                gameStage == 5 -> .generateRoom()
 //                gameStage == 4 -> .generateRoom()
-//                gameStage == 3 -> .generateRoom()
+                gameStage == 3 -> CrystalCavesRoomGenerator().generateRoom()
                 gameStage == -1 -> AntHellRoomGenerator().generateRoom()
                 gameStage == 2 && i == 15 -> AntHellEntrance()
                 gameStage == 2 -> CrimsonChimesRoomGenerator().generateRoom()
@@ -54,6 +61,7 @@ class Game(var player: Player) {
             }
 
             visitedRooms.add(newRoom)
+            roomManager.addRoom(newRoom)
             previousRoom.nextRoom = newRoom
             newRoom.previousRoom = previousRoom
             previousRoom = newRoom
@@ -77,6 +85,17 @@ class Game(var player: Player) {
             println("Вы проиграли. Попробуйте еще раз.")
             exitProcess(0)
         }
+    }
+
+    fun gameTransition(newStage: Int) {
+        // Очищаем списки комнат перед новой генерацией
+        visitedRooms.clear()
+        roomManager.clearRooms() // Предполагается, что в RoomManager есть метод для очистки
+
+        gameStage = newStage
+        generateDungeon() // Генерируем новые комнаты для новой стадии
+
+        currentRoom = visitedRooms.firstOrNull() // Устанавливаем текущую комнату на первую сгенерированную
     }
 
 
@@ -118,4 +137,7 @@ class Game(var player: Player) {
         }
     }
 
+    fun getCurrentRoomIndex(): Int {
+        return visitedRooms.indexOf(currentRoom)
+    }
 }

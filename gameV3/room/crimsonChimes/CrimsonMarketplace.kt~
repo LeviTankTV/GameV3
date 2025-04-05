@@ -156,5 +156,5 @@ class CrimsonMarketplace : Room(name = "Малиновый Рынок", descript
             else -> 100 // Базовая цена для других предметов
         }
     }
-    
+
 }

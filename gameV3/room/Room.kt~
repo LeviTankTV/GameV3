@@ -91,7 +91,7 @@ abstract class Room(val name: String, val description: String) {
 
                             // Проверяем, жив ли враг после действия
                             if (!enemy.isAlive()) {
-                                enemy.die(game) // Вызываем метод die() если враг мёртв
+                                enemy.die(game, room) // Вызываем метод die() если враг мёртв
                                 this.enemies.remove(enemy)
                                 println("${enemy.name} был повержен!")
 

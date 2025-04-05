@@ -2,12 +2,11 @@ package gameV3.player
 
 import gameV3.entities.Entity
 import gameV3.entities.allies.Ally
-import gameV3.item.Consumable
-import gameV3.item.Item
-import gameV3.item.Talisman
+import gameV3.item.*
 import gameV3.item.Throwable
 import gameV3.item.weapon.Weapon
 import gameV3.main.Game
+import gameV3.player.spells.*
 import gameV3.room.Room
 import kotlin.random.Random
 
@@ -381,7 +380,7 @@ class Player(
                 println("2. Использовать инвентарь")
                 println("3. Посмотреть характеристику игрока")
                 println("4. Посмотреть характеристику астрала")
-                println("4. Посмотреть характеристику врагов")
+                println("5. Посмотреть характеристику врагов")
 
                 var choice = readlnOrNull()?.toIntOrNull() ?: -1 // Обработка ввода пользователя
 
@@ -425,7 +424,7 @@ class Player(
                 println("2. Использовать инвентарь")
                 println("3. Посмотреть характеристику игрока")
                 println("4. Посмотреть характеристику астрала")
-                println("4. Посмотреть характеристику врагов")
+                println("5. Посмотреть характеристику врагов")
 
                 var choice = readlnOrNull()?.toIntOrNull() ?: -1 // Обработка ввода пользователя
 
@@ -463,6 +462,58 @@ class Player(
             }
 
             3 -> {
+                println("Бой в кристальных пещерах продолжается. Выберите действие:")
+                println("1. Атаковать")
+                println("2. Использовать заклинание")
+                println("3. Использовать инвентарь")
+                println("4. Посмотреть характеристику игрока")
+                println("5. Посмотреть характеристику астрала")
+                println("6. Посмотреть характеристику врагов")
+                if (game.player.allies.isNotEmpty()) { println("7. Посмотреть характеристику союзников") }
+
+                var choice = readlnOrNull()?.toIntOrNull() ?: -1 // Обработка ввода пользователя
+
+                when (choice) {
+                    1 -> {
+                        println("Выберите врага:")
+                        for (enemy in room.enemies) {
+                            println("${room.enemies.indexOf(enemy) + 1}. ${enemy.name}")
+                        }
+                        val enemyChoice = readlnOrNull()?.toIntOrNull() ?: -1 // Обработка ввода пользователя
+                        if (enemyChoice in 1..room.enemies.size) {
+                            val enemy = room.enemies[enemyChoice - 1]
+                            attack(weapon, enemy)
+                            return true
+                        } else {
+                            println("Неверный выбор. Попробуйте снова.")
+                        }
+                    }
+                    2 -> {
+                        useSpells(game, room)
+                    }
+                    3 -> {
+                        useInventory(game, room)
+                    }
+                    4 -> {
+                        showPlayerStats(game)
+                    }
+                    5 -> {
+                        showAstralStats(game)
+                    }
+                    6 -> {
+                        showEnemiesStats(room)
+                    }
+                    7 -> {
+                        if (game.player.allies.isNotEmpty()) {
+                            showAlliesStats(game)
+                        } else {
+                            println("У вас нет союзников.")
+                        }
+                    }
+                    else -> {
+                        println("Неверный выбор. Попробуйте снова.")
+                    }
+                }
 
             }
 
@@ -476,6 +527,221 @@ class Player(
         }
         return true
     }
+
+    private fun useSpells(game: Game, room: Room) {
+        println("Выберите заклинание:")
+        println("1. Исцеление (60 маны)")
+        println("2. Огненный шар (40 маны)")
+        println("3. Землятрясение (80 маны)")
+        println("4. Тёмная Стрела (60 маны)")
+        println("5. Ледяной шар (60 маны)")
+        println("6. Мистическая Волна (60 маны)")
+        println("7. Магия крови (100 маны)")
+
+        val choice = readlnOrNull()?.toIntOrNull() ?: -1 // Обработка ввода пользователя
+
+        when (choice) {
+            1 -> {
+                val manaCost = 60
+                if (game.player.mana < manaCost) {
+                    println("Недостаточно маны!")
+                    return // Exit the function
+                }
+
+                println("Выберите того, кого хотите исцелить:")
+                println("1. Себя")
+                println("2. Астрала")
+                println("3. Союзника")
+
+                val healChoice = readlnOrNull()?.toIntOrNull() ?: -1
+
+                when (healChoice) {
+                    1 -> {
+                        game.player.mana -= manaCost
+                        HealSpell().cast(game.player)
+                        println("Использовано ${manaCost} маны. Осталось ${game.player.mana} маны.")
+                    }
+
+                    2 -> {
+                        if (game.player.astral != null) {
+                            game.player.mana -= manaCost
+                            HealSpell().cast(game.player.astral!!)
+                            println("Использовано ${manaCost} маны. Осталось ${game.player.mana} маны.")
+                        } else {
+                            println("У вас нет астрала.")
+                        }
+                    }
+
+                    3 -> {
+                        if (game.player.allies.isNotEmpty()) {
+                            println("Выберите союзника:")
+                            for (ally in game.player.allies) {
+                                println("${game.player.allies.indexOf(ally) + 1}. ${ally.name}")
+                            }
+                            val allyChoice = readlnOrNull()?.toIntOrNull() ?: -1
+                            if (allyChoice in 1..game.player.allies.size) {
+                                game.player.mana -= manaCost
+                                val ally = game.player.allies[allyChoice - 1]
+                                HealSpell().cast(ally)
+                                println("Использовано ${manaCost} маны. Осталось ${game.player.mana} маны.")
+                            } else {
+                                println("Неверный выбор. Попробуйте снова.")
+                            }
+                        } else {
+                            println("У вас нет союзников.")
+                        }
+                    }
+
+                    else -> println("Неверный выбор. Попробуйте снова.")
+                }
+            }
+
+            2 -> {
+                val manaCost = 40
+                if (game.player.mana < manaCost) {
+                    println("Недостаточно маны!")
+                    return
+                }
+
+                if (room.enemies.isEmpty()) {
+                    println("В комнате нет врагов.")
+                    return
+                }
+                println("Выберите врага:")
+                for (enemy in room.enemies) {
+                    println("${room.enemies.indexOf(enemy) + 1}. ${enemy.name}")
+                }
+                val enemyChoice = readlnOrNull()?.toIntOrNull() ?: -1
+                if (enemyChoice in 1..room.enemies.size) {
+                    game.player.mana -= manaCost
+                    val enemy = room.enemies[enemyChoice - 1]
+                    FireballSpell().cast(enemy)
+                    println("Использовано ${manaCost} маны. Осталось ${game.player.mana} маны.")
+                } else {
+                    println("Неверный выбор. Попробуйте снова.")
+                }
+            }
+
+            3 -> {
+                val manaCost = 80
+                if (game.player.mana < manaCost) {
+                    println("Недостаточно маны!")
+                    return
+                }
+
+                game.player.mana -= manaCost
+                EarthQuakeSpell().cast(room.enemies)
+                println("Использовано ${manaCost} маны. Осталось ${game.player.mana} маны.")
+            }
+
+            4 -> {
+                val manaCost = 60
+                if (game.player.mana < manaCost) {
+                    println("Недостаточно маны!")
+                    return
+                }
+                if (room.enemies.isEmpty()) {
+                    println("В комнате нет врагов.")
+                    return
+                }
+
+                println("Выберите врага:")
+                for (enemy in room.enemies) {
+                    println("${room.enemies.indexOf(enemy) + 1}. ${enemy.name}")
+                }
+                val enemyChoice = readlnOrNull()?.toIntOrNull() ?: -1
+                if (enemyChoice in 1..room.enemies.size) {
+                    game.player.mana -= manaCost
+                    val enemy = room.enemies[enemyChoice - 1]
+                    ShadowBolt().cast(enemy)
+                    println("Использовано ${manaCost} маны. Осталось ${game.player.mana} маны.")
+                } else {
+                    println("Неверный выбор. Попробуйте снова.")
+                }
+            }
+
+            5 -> {
+                val manaCost = 60
+                if (game.player.mana < manaCost) {
+                    println("Недостаточно маны!")
+                    return
+                }
+                if (room.enemies.isEmpty()) {
+                    println("В комнате нет врагов.")
+                    return
+                }
+
+                println("Выберите врага:")
+                for (enemy in room.enemies) {
+                    println("${room.enemies.indexOf(enemy) + 1}. ${enemy.name}")
+                }
+                val enemyChoice = readlnOrNull()?.toIntOrNull() ?: -1
+                if (enemyChoice in 1..room.enemies.size) {
+                    game.player.mana -= manaCost
+                    val enemy = room.enemies[enemyChoice - 1]
+                    IceSpikeSpell().cast(enemy)
+                    println("Использовано ${manaCost} маны. Осталось ${game.player.mana} маны.")
+                } else {
+                    println("Неверный выбор. Попробуйте снова.")
+                }
+            }
+
+            6 -> {
+                val manaCost = 60
+                if (game.player.mana < manaCost) {
+                    println("Недостаточно маны!")
+                    return
+                }
+                if (room.enemies.isEmpty()) {
+                    println("В комнате нет врагов.")
+                    return
+                }
+                println("Выберите врага:")
+                for (enemy in room.enemies) {
+                    println("${room.enemies.indexOf(enemy) + 1}. ${enemy.name}")
+                }
+                val enemyChoice = readlnOrNull()?.toIntOrNull() ?: -1
+                if (enemyChoice in 1..room.enemies.size) {
+                    game.player.mana -= manaCost
+                    val enemy = room.enemies[enemyChoice - 1]
+                    ArcaneMissile().cast(enemy)
+                    println("Использовано ${manaCost} маны. Осталось ${game.player.mana} маны.")
+                } else {
+                    println("Неверный выбор. Попробуйте снова.")
+                }
+            }
+
+            7 -> {
+                val manaCost = 100
+                if (game.player.mana < manaCost) {
+                    println("Недостаточно маны!")
+                    return
+                }
+                if (room.enemies.isEmpty()) {
+                    println("В комнате нет врагов.")
+                    return
+                }
+                println("Выберите врага:")
+                for (enemy in room.enemies) {
+                    println("${room.enemies.indexOf(enemy) + 1}. ${enemy.name}")
+                }
+                val enemyChoice = readlnOrNull()?.toIntOrNull() ?: -1
+                if (enemyChoice in 1..room.enemies.size) {
+                    game.player.mana -= manaCost
+                    val enemy = room.enemies[enemyChoice - 1]
+                    BloodMagicSpell().cast(enemy)
+                    println("Использовано ${manaCost} маны. Осталось ${game.player.mana} маны.")
+                } else {
+                    println("Неверный выбор. Попробуйте снова.")
+                }
+            }
+
+            else -> {
+                println("Неверный выбор.")
+            }
+        }
+    }
+
 
     private fun showPlayerStats(game: Game) {
         println("Имя: ${game.player.name}")
@@ -497,6 +763,14 @@ class Player(
             println("Имя: ${enemy.name}")
             println("Здоровье: ${enemy.health}")
             println("Уровень: ${enemy.level}")
+        }
+    }
+
+    private fun showAlliesStats(game: Game) {
+        for (ally in game.player.allies) {
+            println("Имя: ${ally.name}")
+            println("Здоровье: ${ally.health}")
+            println("Уровень: ${ally.level}")
         }
     }
 
@@ -562,6 +836,10 @@ class Player(
                         }
                         is Weapon -> {
                             println("Вы не можете использовать оружие в инвентаре.")
+                        }
+                        is MultiThrowable -> {
+                            item.throwAt(room.enemies)
+                            game.player.inventory.removeItem(item)
                         }
                         else -> {
                             item.use(game)

@@ -13,7 +13,7 @@ class WoodenSword : Weapon(
 ) {
     // Переопределяем характеристики для WoodenSword
     override var critChance: Long = 10   // Шанс критического удара в процентах
-    override var critMultiplier: Long = 2 // Множитель урона при критическом ударе
+    override var critMultiplier: Double = 2.0 // Множитель урона при критическом ударе
     override var damage: Long = 3          // Базовый урон
 
     override fun applySpecialEffect(target: Entity) {

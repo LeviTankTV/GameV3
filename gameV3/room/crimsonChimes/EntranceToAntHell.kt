@@ -9,9 +9,7 @@ class EntranceToAntHell(): Room(name = "Вход в Антхелл", description
         val input = readlnOrNull()
         when (input) {
             "да" -> {
-                game.gameStage = -1
-                game.generateDungeon()
-                game.currentRoom = game.visitedRooms[0]
+                game.gameTransition(-1)
             }
             "нет" -> {
                 println("Вы решили не заходить в муравейник")

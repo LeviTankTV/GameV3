@@ -1,5 +1,6 @@
 package gameV3.entities.crystalCavern
 
+import gameV3.item.other.CrystalManticoreEgg
 import gameV3.main.Game
 import gameV3.room.Room
 import kotlin.random.Random

@@ -28,8 +28,7 @@ class IntroCutscene(name: String, description: String) : Room(name, description)
 
         // Генерируем новые комнаты и переходим в следующую
         game.generateDungeon()
-        game.currentRoom = DarkForestRoom("Лес Темноты", "Вы оказались в Лесу Темноты. Территория изменилась до неузнаваемости.")
-        game.previousRoom = null
+        game.moveForward()
 
     }
 
